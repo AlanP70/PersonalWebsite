@@ -1,0 +1,16 @@
+{
+  "name": "personal-website",
+  "version": "1.0.0",
+  "description": "Alan Pipko's personal website",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static HTML - no build required'",
+    "lint": "echo 'No linting configured for static HTML'"
+  },
+  "keywords": ["personal", "website", "portfolio"],
+  "author": "Alan Pipko",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
