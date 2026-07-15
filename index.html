@@ -1,779 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alan Pipko</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0a0a0f;
-      --surface: #111118;
-      --border: #1e1e2e;
-      --accent: #00e5a0;
-      --accent2: #4f8cff;
-      --text: #e8e8f0;
-      --muted: #6b6b88;
-      --card: #13131d;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Syne', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Noise overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
-    }
-
-    /* Grid background */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 4rem;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--accent); }
-
-    /* HERO */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 4rem;
-      padding-top: 80px;
-    }
-
-    .hero-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.2s;
-    }
-
-    .hero h1 {
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.4s;
-    }
-
-    .hero h1 span {
-      color: transparent;
-      -webkit-text-stroke: 1px var(--accent);
-    }
-
-    .hero-desc {
-      max-width: 520px;
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.6s;
-    }
-
-    .hero-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.8s;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.6rem;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #0a0a0f;
-      font-weight: 500;
-    }
-
-    .btn-primary:hover {
-      background: #00ffb3;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,229,160,0.25);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 4rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 1.2s;
-    }
-
-    .scroll-indicator::before {
-      content: '';
-      width: 40px;
-      height: 1px;
-      background: var(--muted);
-    }
-
-    /* SECTIONS */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 3rem;
-      line-height: 1.1;
-    }
-
-    /* PROJECTS */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    .project-card:hover {
-      border-color: rgba(0,229,160,0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-    }
-
-    .project-card:hover::before { transform: scaleX(1); }
-
-    .project-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      opacity: 0.6;
-    }
-
-    .project-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.01em;
-    }
-
-    .project-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.65;
-      margin-bottom: 1.5rem;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 3px;
-      background: rgba(0,229,160,0.08);
-      color: var(--accent);
-      border: 1px solid rgba(0,229,160,0.15);
-      letter-spacing: 0.05em;
-    }
-
-    .project-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: color 0.2s;
-    }
-
-    .project-link:hover { color: var(--accent); }
-
-    /* SKILLS */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-group {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem;
-    }
-
-    .skill-group-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent2);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .skill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .skill-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      padding: 0.3rem 0.7rem;
-      border-radius: 3px;
-      background: rgba(79,140,255,0.07);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    /* EXPERIENCE */
-    .experience-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .exp-item {
-      display: grid;
-      grid-template-columns: 1fr 3fr;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .exp-item:last-child { border-bottom: none; }
-
-    .exp-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      padding-top: 0.2rem;
-    }
-
-    .exp-role {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .exp-company {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-
-    .exp-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* CERT */
-    .cert-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      transition: all 0.25s;
-    }
-
-    .cert-card:hover {
-      border-color: rgba(0,229,160,0.3);
-      transform: translateY(-2px);
-    }
-
-    .cert-issuer {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
-    .cert-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .cert-id {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-    }
-
-    /* CONTACT */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .contact-text {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.75;
-      margin-bottom: 2rem;
-    }
-
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--text);
-      text-decoration: none;
-      padding: 0.9rem 1.2rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-
-    .contact-link:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateX(4px);
-    }
-
-    .contact-link-icon {
-      font-size: 1rem;
-    }
-
-    /* FOOTER */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 2rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Cursor glow */
-    .cursor-glow {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 999;
-      transform: translate(-50%, -50%);
-      transition: left 0.1s, top 0.1s;
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .hero { padding-top: 100px; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alan Pipko — Software Developer</title>
+<meta name="description" content="Alan Pipko — Computer Science student at the University of Guelph and Software Developer Intern at VIBRAINT AI. Real-time systems, computer vision, and full-stack products.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0d0d'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-weight='700' font-size='50' fill='%23c8f135' text-anchor='middle'%3EAP%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <div class="cursor-glow" id="cursorGlow"></div>
+<a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">alan.pipko</div>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+<!-- Icon sprite: SVG icons only, no emoji, consistent 1.5px stroke -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-github" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.69 1.25 3.34.96.1-.75.4-1.25.73-1.53-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+  </symbol>
+  <symbol id="icon-linkedin" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/>
+  </symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3.5 5.5h17a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Z"/>
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="m3 6 9 7 9-7"/>
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11m0 0-4-4m4 4 4-4M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/>
+  </symbol>
+  <symbol id="icon-arrow" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8 7h9v9"/>
+  </symbol>
+  <symbol id="icon-piano" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3.5 6.5h17v11h-17v-11Z"/>
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M7.2 6.5v7M10.9 6.5v7M14.6 6.5v7M18.3 6.5v7"/>
+  </symbol>
+  <symbol id="icon-tennis" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path fill="none" stroke="currentColor" stroke-width="1.5" d="M4.3 7.5c2 1.6 3.2 4 3.2 4.5s-1.2 2.9-3.2 4.5M19.7 7.5c-2 1.6-3.2 4-3.2 4.5s1.2 2.9 3.2 4.5"/>
+  </symbol>
+  <symbol id="icon-camera" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3.5 8.5a1 1 0 0 1 1-1H8l1.2-2h5.6l1.2 2h3.5a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-9Z"/>
+    <circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  </symbol>
+</svg>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag">// CS Student · Cybersecurity · Builder</div>
-    <h1>Alan<br/><span>Pipko</span></h1>
-    <p class="hero-desc">
-      Computer Science student at the University of Guelph, focused on cybersecurity.
-      I love building things — whether that's an AI nutrition app, a Chrome extension, or an educational game. I'm always working on something new.
-    </p>
-    <div class="hero-links">
-      <a href="#projects" class="btn btn-primary">View Projects →</a>
-      <a href="https://github.com/AlanP70" target="_blank" class="btn btn-ghost">GitHub</a>
-      <a href="https://www.linkedin.com/in/alan-pipko-944828342/" target="_blank" class="btn btn-ghost">LinkedIn</a>
-    </div>
-    <div class="scroll-indicator">SCROLL TO EXPLORE</div>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#main">Alan Pipko</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-accent nav-resume" href="resume.pdf" download>
+      <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>
+      Resume
+    </a>
   </div>
+</header>
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-label reveal">// 01. Projects</div>
-    <h2 class="section-title reveal">Things I've Built</h2>
-    <div class="projects-grid">
+<main id="main">
 
-      <div class="project-card reveal">
-        <div class="project-num">001</div>
-        <div class="project-name">SnipSmart</div>
-        <p class="project-desc">A Chrome Extension for on-screen capture with OCR-based text detection, multilingual translation, and a lightweight UI for managing extracted content.</p>
-        <div class="project-tags">
-          <span class="tag">JavaScript</span>
-          <span class="tag">React</span>
-          <span class="tag">Chrome APIs</span>
-          <span class="tag">OCR</span>
-        </div>
-        <a href="https://github.com/AlanP70/SnipSmart" target="_blank" class="project-link">View on GitHub ↗</a>
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-label="Introduction">
+    <div class="section-inner">
+      <p class="eyebrow reveal">Software Developer &middot; Class of 2030</p>
+      <h1 class="hero-name reveal">Alan Pipko</h1>
+      <p class="hero-lede reveal">
+        Computer Science student at the University of Guelph, currently building
+        real-time desktop software at <strong>VIBRAINT&nbsp;</strong>.
+      </p>
+      <div class="hero-links reveal">
+        <a class="link-chip" href="https://github.com/AlanP70" target="_blank" rel="noopener noreferrer">
+          <svg class="icon" aria-hidden="true"><use href="#icon-github"/></svg>
+          GitHub
+        </a>
+        <a class="link-chip" href="https://www.linkedin.com/in/alan-pipko-944828342/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+          <svg class="icon" aria-hidden="true"><use href="#icon-linkedin"/></svg>
+          LinkedIn
+        </a>
+        <a class="link-chip" href="mailto:alan.pipko@gmail.com">
+          <svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg>
+          Email
+        </a>
+        <a class="link-chip" href="resume.pdf" download>
+          <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>
+          Resume
+        </a>
       </div>
-
-      <div class="project-card reveal">
-        <div class="project-num">002</div>
-        <div class="project-name">CodeQuest</div>
-        <p class="project-desc">An educational game that teaches programming concepts and logic. Built with OOP, recursion, stacks, and file I/O, optimized for a smooth and interactive experience.</p>
-        <div class="project-tags">
-          <span class="tag">C#</span>
-          <span class="tag">MonoGame</span>
-          <span class="tag">.NET</span>
-          <span class="tag">OOP</span>
-        </div>
-        <a href="https://github.com/AlanP70/CodeQuest" target="_blank" class="project-link">View on GitHub ↗</a>
-      </div>
-
-      <div class="project-card reveal">
-        <div class="project-num">003</div>
-        <div class="project-name">MacroBud</div>
-        <p class="project-desc">An AI-powered nutrition advisor for calorie tracking and progress monitoring. Features a Node.js API with optimized MySQL indexing and OpenAI integration.</p>
-        <div class="project-tags">
-          <span class="tag">JavaScript</span>
-          <span class="tag">React</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">OpenAI API</span>
-          <span class="tag">Node.js</span>
-        </div>
-      </div>
-
     </div>
   </section>
 
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="section-label reveal">// 02. Experience</div>
-    <h2 class="section-title reveal">Where I've Worked</h2>
-    <div class="experience-list">
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="section" aria-label="Experience">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Experience</h2>
 
-      <div class="exp-item reveal">
-        <div class="exp-date">Jul 2024 – Aug 2025</div>
-        <div>
-          <div class="exp-role">Programming Instructor</div>
-          <div class="exp-company">UMCA Rich Tree Academy · Vaughan, ON</div>
-          <p class="exp-desc">Led hands-on workshops teaching core programming concepts to 30+ students. Adjusted lesson pacing to suit varying experience levels and fostered a collaborative, confidence-building environment.</p>
-        </div>
-      </div>
-
-      <div class="exp-item reveal">
-        <div class="exp-date">Aug 2022 – Oct 2023</div>
-        <div>
-          <div class="exp-role">Barista / Customer Service</div>
-          <div class="exp-company">Booster Juice · Vaughan, ON</div>
-          <p class="exp-desc">Managed transactions, prepared beverages, and collaborated with team to optimize workflow and maintain an efficient workspace.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-label reveal">// 03. Skills</div>
-    <h2 class="section-title reveal">What I Work With</h2>
-    <div class="skills-grid">
-      <div class="skill-group reveal">
-        <div class="skill-group-title">Languages</div>
-        <div class="skill-list">
-          <span class="skill-pill">C</span>
-          <span class="skill-pill">C#</span>
-          <span class="skill-pill">Java</span>
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">SQL</span>
-          <span class="skill-pill">JavaScript</span>
-          <span class="skill-pill">HTML/CSS</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <div class="skill-group-title">Frameworks & Libraries</div>
-        <div class="skill-list">
-          <span class="skill-pill">React</span>
-          <span class="skill-pill">Node.js</span>
-          <span class="skill-pill">MonoGame</span>
-          <span class="skill-pill">SQLite</span>
-          <span class="skill-pill">.NET</span>
-          <span class="skill-pill">Tkinter</span>
-          <span class="skill-pill">Pynput</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <div class="skill-group-title">Developer Tools</div>
-        <div class="skill-list">
-          <span class="skill-pill">Git</span>
-          <span class="skill-pill">Docker</span>
-          <span class="skill-pill">Linux</span>
-          <span class="skill-pill">Wireshark</span>
-          <span class="skill-pill">MySQL</span>
-          <span class="skill-pill">Figma</span>
-          <span class="skill-pill">Vite</span>
-          <span class="skill-pill">Valgrind</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <div class="skill-group-title">Spoken Languages</div>
-        <div class="skill-list">
-          <span class="skill-pill">English</span>
-          <span class="skill-pill">French</span>
-          <span class="skill-pill">Russian</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top: 3rem;">
-      <div class="section-label reveal" style="margin-bottom: 1rem;">// Certifications</div>
-      <a href="https://www.credly.com/badges/00b1ee3b-762e-4823-882f-5b4c71225cb8/linked_in_profile" target="_blank" style="text-decoration:none;">
-        <div class="cert-card reveal">
-          <div>
-            <div class="cert-issuer">IBM SkillsBuild · May 2026</div>
-            <div class="cert-name">Cybersecurity Fundamentals</div>
-            <div class="cert-id">ID: 00b1ee3b-762e-4823-882f-5b4c71225cb8</div>
+      <div class="timeline">
+        <article class="entry reveal">
+          <div class="entry-head">
+            <div>
+              <h3 class="entry-role">Software Developer</h3>
+              <p class="entry-org">VIBRAINT</p>
+              <p class="entry-loc">Richmond Hill, ON</p>
+            </div>
+            <p class="entry-dates">July 2026 &ndash; Present</p>
           </div>
-          <span class="btn btn-ghost">View Credential ↗</span>
-        </div>
-      </a>
+          <p class="entry-desc">
+            Rebuilding a legacy JavaFX charting system into live, continuously
+            updating graphs for high-frequency data. Also set up a consistent
+            build environment across the team's machines.
+          </p>
+          <ul class="tags">
+            <li>JavaFX</li>
+            <li>Java</li>
+            <li>Real-Time Data</li>
+            <li>Desktop</li>
+          </ul>
+        </article>
+
+        <article class="entry reveal">
+          <div class="entry-head">
+            <div>
+              <h3 class="entry-role">Machine Learning Intern</h3>
+              <p class="entry-org">LineChecks</p>
+              <p class="entry-loc">Toronto, ON &middot; Desjardins portfolio company</p>
+            </div>
+            <p class="entry-dates">March 2026 &ndash; April 2026</p>
+          </div>
+          <p class="entry-desc">
+            Trained a YOLO model to detect real-time court occupancy at tennis
+            and pickleball facilities, then built the pipeline that turned
+            occupancy counts into live wait-time estimates.
+          </p>
+          <ul class="tags">
+            <li>Computer Vision</li>
+            <li>Python</li>
+            <li>YOLO</li>
+          </ul>
+        </article>
+      </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-label reveal">// 04. Contact</div>
-    <h2 class="section-title reveal">Get In Touch</h2>
-    <div class="contact-grid">
-      <div>
-        <p class="contact-text reveal">
-          Open to internships, collaborations, and cool opportunities in tech.
-          Whether you want to build something together or just chat — feel free to reach out.
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="section" aria-label="Projects">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Projects</h2>
+
+      <div class="grid-projects">
+        <article class="card reveal">
+          <h3 class="card-title">Eura</h3>
+          <p class="card-desc">
+            An AI-powered math tutoring platform with an interactive whiteboard.
+            Built the full auth system &mdash; Google OAuth2 with CSRF protection,
+            email/password login with bcrypt, and JWT sessions with refresh
+            tokens &mdash; plus per-user scoped canvas storage.
+          </p>
+          <ul class="tags">
+            <li>FastAPI</li>
+            <li>React</li>
+            <li>TypeScript</li>
+            <li>PostgreSQL</li>
+            <li>OAuth2</li>
+            <li>JWT</li>
+          </ul>
+          <a class="card-link" href="https://euralearn.com/" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+            View website
+          </a>
+        </article>
+
+        <article class="card reveal">
+          <h3 class="card-title">SnipSmart</h3>
+          <p class="card-desc">
+            A Chrome extension for capturing on-screen text. Uses OCR to
+            detect and select text from screenshots, translates it, and
+            makes it easy to copy and manage what it finds.
+          </p>
+          <ul class="tags">
+            <li>JavaScript</li>
+            <li>React</li>
+            <li>Chrome Extension</li>
+            <li>OCR</li>
+          </ul>
+          <a class="card-link" href="https://github.com/AlanP70/SnipSmart" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+            View repo
+          </a>
+        </article>
+
+        <article class="card reveal">
+          <h3 class="card-title">CodeQuest</h3>
+          <p class="card-desc">
+            An educational game that teaches programming concepts through
+            gameplay, built in C# with MonoGame. Core mechanics run on
+            recursion, stacks, and file I/O.
+          </p>
+          <ul class="tags">
+            <li>C#</li>
+            <li>MonoGame</li>
+            <li>Game Dev</li>
+          </ul>
+          <a class="card-link" href="https://github.com/AlanP70/CodeQuest" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+            View repo
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="section" aria-label="Skills">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Skills</h2>
+      <ul class="tags tags-lg reveal">
+        <li>Java</li>
+        <li>Python</li>
+        <li>TypeScript</li>
+        <li>C#</li>
+        <li>C</li>
+        <li>SQL</li>
+        <li>React</li>
+        <li>FastAPI</li>
+        <li>PostgreSQL</li>
+        <li>Git</li>
+        <li>Docker</li>
+        <li>Figma</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="section" aria-label="About">
+    <div class="section-inner">
+      <h2 class="section-title reveal">About</h2>
+      <div class="about-grid reveal">
+        <p class="about-text">
+          Outside of code, I'm trilingual and split my free time between the
+          piano, the tennis court, and photography.
         </p>
-        <a href="mailto:alan.pipko@gmail.com" class="btn btn-primary reveal" style="display:inline-flex;">
-          Say Hello →
-        </a>
+        <ul class="lang-tags" aria-label="Languages spoken">
+          <li>EN</li>
+          <li>FR</li>
+          <li>RU</li>
+        </ul>
       </div>
-      <div class="contact-links reveal">
-        <a href="mailto:alan.pipko@gmail.com" class="contact-link">
-          <span class="contact-link-icon">✉</span> alan.pipko@gmail.com
+      <ul class="interests reveal">
+        <li>
+          <svg class="icon" aria-hidden="true"><use href="#icon-piano"/></svg>
+          Piano
+        </li>
+        <li>
+          <svg class="icon" aria-hidden="true"><use href="#icon-tennis"/></svg>
+          Tennis
+        </li>
+        <li>
+          <svg class="icon" aria-hidden="true"><use href="#icon-camera"/></svg>
+          Photography
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section" aria-label="Contact">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Let's talk</h2>
+      <p class="contact-lede reveal">Open to SWE internship opportunities &mdash; reach out anytime.</p>
+      <div class="hero-links reveal">
+        <a class="link-chip" href="mailto:alan.pipko@gmail.com">
+          <svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg>
+          alan.pipko@gmail.com
         </a>
-        <a href="https://www.linkedin.com/in/alan-pipko-944828342/" target="_blank" class="contact-link">
-          <span class="contact-link-icon">in</span> linkedin.com/in/alan-pipko
+        <a class="link-chip" href="https://github.com/AlanP70" target="_blank" rel="noopener noreferrer">
+          <svg class="icon" aria-hidden="true"><use href="#icon-github"/></svg>
+          GitHub
         </a>
-        <a href="https://github.com/AlanP70" target="_blank" class="contact-link">
-          <span class="contact-link-icon">⌥</span> github.com/AlanP70
+        <a class="link-chip" href="https://www.linkedin.com/in/alan-pipko-944828342/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+          <svg class="icon" aria-hidden="true"><use href="#icon-linkedin"/></svg>
+          LinkedIn
         </a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <span class="footer-text">© 2026 Alan Pipko</span>
-    <span class="footer-text">Built with HTML · CSS · JS</span>
-  </footer>
+</main>
 
-  <script>
-    // Cursor glow
-    const glow = document.getElementById('cursorGlow');
-    document.addEventListener('mousemove', e => {
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
+<footer class="footer">
+  <div class="section-inner footer-inner">
+    <p>&copy; <span id="year">2026</span> Alan Pipko</p>
+  </div>
+</footer>
 
-    // Scroll reveal
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
-
+<script src="script.js"></script>
 </body>
 </html>
