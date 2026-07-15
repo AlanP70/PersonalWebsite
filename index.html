@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alan Pipko — Software Developer</title>
 <meta name="description" content="Alan Pipko — Computer Science student at the University of Guelph and Software Developer Intern at VIBRAINT AI. Real-time systems, computer vision, and full-stack products.">
-<meta name="theme-color" content="#0d0d0d">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0d0d'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-weight='700' font-size='50' fill='%23c8f135' text-anchor='middle'%3EAP%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0b1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b1220'/%3E%3Ctext x='50' y='67' font-family='Georgia,serif' font-weight='700' font-size='48' fill='%23e0a34c' text-anchor='middle'%3EAP%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -73,7 +76,9 @@
   <section class="hero" aria-label="Introduction">
     <div class="section-inner">
       <p class="eyebrow reveal">Software Developer &middot; Class of 2030</p>
-      <h1 class="hero-name reveal">Alan Pipko</h1>
+      <h1 class="hero-name reveal">
+        <span class="hero-name-frame">Alan Pipko</span>
+      </h1>
       <p class="hero-lede reveal">
         Computer Science student at the University of Guelph, currently building
         real-time desktop software at <strong>VIBRAINT&nbsp;</strong>.
@@ -102,7 +107,7 @@
   <!-- ============ EXPERIENCE ============ -->
   <section id="experience" class="section" aria-label="Experience">
     <div class="section-inner">
-      <h2 class="section-title reveal">Experience</h2>
+      <h2 class="section-title reveal"><span class="section-num" aria-hidden="true">01</span>Experience</h2>
 
       <div class="timeline">
         <article class="entry reveal">
@@ -154,11 +159,14 @@
   <!-- ============ PROJECTS ============ -->
   <section id="projects" class="section" aria-label="Projects">
     <div class="section-inner">
-      <h2 class="section-title reveal">Projects</h2>
+      <h2 class="section-title reveal"><span class="section-num" aria-hidden="true">02</span>Projects</h2>
 
       <div class="grid-projects">
         <article class="card reveal">
-          <h3 class="card-title">Eura</h3>
+          <div class="card-head">
+            <h3 class="card-title">Eura</h3>
+            <span class="frame-no" aria-hidden="true">01</span>
+          </div>
           <p class="card-desc">
             An AI-powered math tutoring platform with an interactive whiteboard.
             Built the full auth system &mdash; Google OAuth2 with CSRF protection,
@@ -180,7 +188,10 @@
         </article>
 
         <article class="card reveal">
-          <h3 class="card-title">SnipSmart</h3>
+          <div class="card-head">
+            <h3 class="card-title">SnipSmart</h3>
+            <span class="frame-no" aria-hidden="true">02</span>
+          </div>
           <p class="card-desc">
             A Chrome extension for capturing on-screen text. Uses OCR to
             detect and select text from screenshots, translates it, and
@@ -199,7 +210,10 @@
         </article>
 
         <article class="card reveal">
-          <h3 class="card-title">CodeQuest</h3>
+          <div class="card-head">
+            <h3 class="card-title">CodeQuest</h3>
+            <span class="frame-no" aria-hidden="true">03</span>
+          </div>
           <p class="card-desc">
             An educational game that teaches programming concepts through
             gameplay, built in C# with MonoGame. Core mechanics run on
@@ -222,8 +236,8 @@
   <!-- ============ SKILLS ============ -->
   <section id="skills" class="section" aria-label="Skills">
     <div class="section-inner">
-      <h2 class="section-title reveal">Skills</h2>
-      <ul class="tags tags-lg reveal">
+      <h2 class="section-title reveal"><span class="section-num" aria-hidden="true">03</span>Skills</h2>
+      <ul class="filmstrip reveal">
         <li>Java</li>
         <li>Python</li>
         <li>TypeScript</li>
@@ -243,7 +257,7 @@
   <!-- ============ ABOUT ============ -->
   <section id="about" class="section" aria-label="About">
     <div class="section-inner">
-      <h2 class="section-title reveal">About</h2>
+      <h2 class="section-title reveal"><span class="section-num" aria-hidden="true">04</span>About</h2>
       <div class="about-grid reveal">
         <p class="about-text">
           Outside of code, I'm trilingual and split my free time between the
@@ -275,7 +289,7 @@
   <!-- ============ CONTACT ============ -->
   <section id="contact" class="section" aria-label="Contact">
     <div class="section-inner">
-      <h2 class="section-title reveal">Let's talk</h2>
+      <h2 class="section-title reveal"><span class="section-num" aria-hidden="true">05</span>Let's talk</h2>
       <p class="contact-lede reveal">Open to SWE internship opportunities &mdash; reach out anytime.</p>
       <div class="hero-links reveal">
         <a class="link-chip" href="mailto:alan.pipko@gmail.com">
@@ -298,7 +312,7 @@
 
 <footer class="footer">
   <div class="section-inner footer-inner">
-    <p>&copy; <span id="year">2026</span> Alan Pipko</p>
+    <p><span class="frame-tag" aria-hidden="true">FRAME 24A</span>&copy; <span id="year">2026</span> Alan Pipko</p>
   </div>
 </footer>
 
