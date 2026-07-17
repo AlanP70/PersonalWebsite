@@ -9,7 +9,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
   --font-heading: var(--font-display);
-  --color-glow: var(--glow);
   --color-panel: var(--panel);
   --color-panel-foreground: var(--panel-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -51,48 +50,82 @@
 }
 
 /*
-  Dark navy-blue theme. This site is dark-only by design (no light mode
-  toggle), so :root and .dark hold identical values — .dark is kept in
-  sync so any imported component that gates on the `dark:` variant still
-  renders correctly.
+  Monochrome, neutral-gray theme. Dark is the default (next-themes toggles the
+  `.dark` class on <html>); both themes are strictly grayscale — no colored
+  accent. `--primary` is an inverted neutral (near-white on dark, near-black on
+  light) so buttons read as a clean tonal shift rather than a highlight.
 */
-:root,
+:root {
+  --background: #fafafa;
+  --foreground: #18181b;
+  --panel: #ffffff;
+  --panel-foreground: #18181b;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --accent: #e4e4e7;
+  --accent-foreground: #18181b;
+  --destructive: #dc2626;
+  --border: rgb(0 0 0 / 10%);
+  --input: rgb(0 0 0 / 12%);
+  --ring: #71717a;
+  --chart-1: #71717a;
+  --chart-2: #a1a1aa;
+  --chart-3: #52525b;
+  --chart-4: #d4d4d8;
+  --chart-5: #3f3f46;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #18181b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #e4e4e7;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: rgb(0 0 0 / 10%);
+  --sidebar-ring: #71717a;
+}
+
 .dark {
-  --background: #060b18;
-  --foreground: #e8edf7;
-  --panel: #0b1220;
-  --panel-foreground: #e8edf7;
-  --card: #0b1220;
-  --card-foreground: #e8edf7;
-  --popover: #0b1220;
-  --popover-foreground: #e8edf7;
-  --primary: #3b82f6;
-  --primary-foreground: #f8fafc;
-  --secondary: #111a2e;
-  --secondary-foreground: #e8edf7;
-  --muted: #111a2e;
-  --muted-foreground: #8a97ad;
-  --accent: #16233d;
-  --accent-foreground: #e8edf7;
+  --background: #0f0f0f;
+  --foreground: #ededed;
+  --panel: #1c1c1e;
+  --panel-foreground: #ededed;
+  --card: #1c1c1e;
+  --card-foreground: #ededed;
+  --popover: #1c1c1e;
+  --popover-foreground: #ededed;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary: #1c1c1e;
+  --secondary-foreground: #ededed;
+  --muted: #1c1c1e;
+  --muted-foreground: #a1a1aa;
+  --accent: #262626;
+  --accent-foreground: #ededed;
   --destructive: #f87171;
   --border: rgb(255 255 255 / 10%);
-  --input: rgb(255 255 255 / 15%);
-  --ring: #60a5fa;
-  --glow: #38bdf8;
-  --chart-1: #3b82f6;
-  --chart-2: #60a5fa;
-  --chart-3: #38bdf8;
-  --chart-4: #818cf8;
-  --chart-5: #22d3ee;
-  --radius: 0.75rem;
-  --sidebar: #0b1220;
-  --sidebar-foreground: #e8edf7;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #f8fafc;
-  --sidebar-accent: #16233d;
-  --sidebar-accent-foreground: #e8edf7;
+  --input: rgb(255 255 255 / 12%);
+  --ring: #a1a1aa;
+  --chart-1: #a1a1aa;
+  --chart-2: #d4d4d8;
+  --chart-3: #71717a;
+  --chart-4: #52525b;
+  --chart-5: #e4e4e7;
+  --sidebar: #1c1c1e;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #fafafa;
+  --sidebar-primary-foreground: #18181b;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #ededed;
   --sidebar-border: rgb(255 255 255 / 10%);
-  --sidebar-ring: #60a5fa;
+  --sidebar-ring: #a1a1aa;
 }
 
 @layer base {
@@ -101,6 +134,13 @@
   }
   html {
     @apply font-sans scroll-smooth;
+    /* Hide the visual scrollbar site-wide; scrolling stays fully functional. */
+    scrollbar-width: none;
+  }
+  /* Firefox honours scrollbar-width on html; WebKit/Blink need the per-element
+     rule below, so hide the scrollbar on every scroll container. */
+  *::-webkit-scrollbar {
+    display: none;
   }
   body {
     @apply bg-background text-foreground;
@@ -124,11 +164,5 @@
   }
   .section-container-wide {
     @apply mx-auto w-full max-w-3xl px-6 sm:px-8;
-  }
-  .glass-panel {
-    @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm;
-  }
-  .glow-text {
-    @apply bg-gradient-to-r from-blue-400 via-sky-300 to-blue-500 bg-clip-text text-transparent;
   }
 }

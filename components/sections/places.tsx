@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import { FadeIn } from "@/components/ui/fade-in";
 import { photos } from "@/lib/data/places";
 
 const SCROLL_SPEED = 0.4; // px per animation frame — slow, continuous drift
@@ -88,76 +87,75 @@ export function Places() {
   const strip = loop ? [...photos, ...photos] : photos;
 
   return (
-    <section id="places" aria-label="Photography" className="py-24">
-      <FadeIn>
-        <div className="section-container">
-          <h2 className="font-heading text-3xl font-bold sm:text-4xl">
-            <span className="mr-3 text-muted-foreground/50">04</span>
-            Photography
-          </h2>
-          <p className="mt-2 mb-10 text-sm text-muted-foreground">
-            My favourite photos as a beginner photographer.
-          </p>
-        </div>
+    <section aria-label="Photography" className="py-14 sm:py-16">
+      <div className="section-container">
+        <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
+          Photography
+        </h2>
+        <p className="mt-2 mb-8 text-sm text-muted-foreground">
+          My favourite photos as a beginner photographer.
+        </p>
+      </div>
 
-        {/* The visual strip below duplicates photos for a seamless loop and
-            is hidden from assistive tech; this list is the real content. */}
-        {loop && (
-          <ul className="sr-only">
-            {photos.map((photo) => (
-              <li key={photo.src}>{photo.caption ?? "Photograph"}</li>
-            ))}
-          </ul>
-        )}
-
-        <div
-          ref={trackRef}
-          aria-hidden={loop ? true : undefined}
-          onMouseEnter={pause}
-          onMouseLeave={resumeNow}
-          onWheel={() => {
-            pause();
-            resumeSoon();
-          }}
-          onTouchStart={pause}
-          onTouchEnd={resumeSoon}
-          onPointerDown={pause}
-          onPointerUp={resumeSoon}
-          className={`flex items-center gap-6 overflow-x-auto px-6 pb-2 sm:px-8 [scroll-behavior:auto] [scrollbar-width:thin] ${
-            loop ? "" : "snap-x snap-mandatory"
-          }`}
-        >
-          {strip.map((photo, index) => (
-            <figure
-              key={`${photo.src}-${index}`}
-              className={`shrink-0 ${loop ? "" : "snap-start"}`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element -- natural
-                  dimensions aren't known ahead of time, so capping max-height
-                  and max-width (both auto otherwise) is what keeps every
-                  aspect ratio uncropped; next/image needs width/height or a
-                  fill parent. */}
-              <img
-                src={photo.src}
-                alt={photo.caption ?? "Photograph"}
-                // The duplicated tail copy (index >= photos.length) can lazy
-                // load — it's not visible until the loop has scrolled a full
-                // cycle. The first copy must load eagerly: an unsized lazy
-                // image has no layout width yet, so `track.scrollWidth` can
-                // stay equal to `clientWidth` and the auto-scroll effect has
-                // nothing to scroll through.
-                loading={index < photos.length ? "eager" : "lazy"}
-                className="h-auto max-h-[26rem] w-auto max-w-[85vw] rounded-lg border border-white/10 sm:max-w-[34rem]"
-              />
-              {photo.caption && (
-                <figcaption className="mt-2 text-sm text-muted-foreground">
-                  {photo.caption}
-                </figcaption>
-              )}
-            </figure>
+      {/* The visual strip below duplicates photos for a seamless loop and
+          is hidden from assistive tech; this list is the real content. */}
+      {loop && (
+        <ul className="sr-only">
+          {photos.map((photo) => (
+            <li key={photo.src}>{photo.caption ?? "Photograph"}</li>
           ))}
-        </div>
-      </FadeIn>
+        </ul>
+      )}
+
+      <div
+        ref={trackRef}
+        aria-hidden={loop ? true : undefined}
+        onMouseEnter={pause}
+        onMouseLeave={resumeNow}
+        onWheel={() => {
+          pause();
+          resumeSoon();
+        }}
+        onTouchStart={pause}
+        onTouchEnd={resumeSoon}
+        onPointerDown={pause}
+        onPointerUp={resumeSoon}
+        className={`flex items-center gap-6 overflow-x-auto px-6 pb-2 sm:px-8 [scroll-behavior:auto] ${
+          loop ? "" : "snap-x snap-mandatory"
+        }`}
+      >
+        {strip.map((photo, index) => (
+          <figure
+            key={`${photo.src}-${index}`}
+            className={`group relative shrink-0 ${loop ? "" : "snap-start"}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- natural
+                dimensions aren't known ahead of time, so capping max-height
+                and max-width (both auto otherwise) is what keeps every
+                aspect ratio uncropped; next/image needs width/height or a
+                fill parent. */}
+            <img
+              src={photo.src}
+              alt={photo.caption ?? "Photograph"}
+              // The duplicated tail copy (index >= photos.length) can lazy
+              // load — it's not visible until the loop has scrolled a full
+              // cycle. The first copy must load eagerly: an unsized lazy
+              // image has no layout width yet, so `track.scrollWidth` can
+              // stay equal to `clientWidth` and the auto-scroll effect has
+              // nothing to scroll through.
+              loading={index < photos.length ? "eager" : "lazy"}
+              className="block h-auto max-h-[26rem] w-auto max-w-[85vw] rounded-lg border border-border sm:max-w-[34rem]"
+            />
+            {photo.caption && (
+              // Caption fades in over a bottom gradient on hover. Touch devices
+              // have no hover, so `(hover: none)` reveals it permanently.
+              <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-lg bg-gradient-to-t from-black/75 via-black/25 to-transparent p-4 text-sm font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 [@media(hover:none)]:opacity-100">
+                {photo.caption}
+              </figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }

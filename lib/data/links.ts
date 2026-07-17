@@ -4,10 +4,5 @@ export const links = {
   github: "https://github.com/AlanP70",
   linkedin: "https://www.linkedin.com/in/alan-pipko-944828342/",
   email: "alan.pipko@gmail.com",
-  resume: "/resume.pdf",
+  resume: "/Main_Resume.pdf",
 };
-
-export const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-];

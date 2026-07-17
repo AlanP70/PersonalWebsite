@@ -1,21 +1,18 @@
-import { Hero } from "@/components/sections/hero";
+import { SiteShell, type TabDef } from "@/components/site-shell";
+import { About } from "@/components/sections/about";
 import { Experience } from "@/components/sections/experience";
 import { Projects } from "@/components/sections/projects";
-import { Skills } from "@/components/sections/skills";
 import { Places } from "@/components/sections/places";
-import { About } from "@/components/sections/about";
 import { Contact } from "@/components/sections/contact";
 
+const tabs: TabDef[] = [
+  { id: "about", label: "About", panel: <About /> },
+  { id: "experience", label: "Experience", panel: <Experience /> },
+  { id: "projects", label: "Projects", panel: <Projects /> },
+  { id: "photography", label: "Photography", panel: <Places /> },
+  { id: "contact", label: "Contact", panel: <Contact /> },
+];
+
 export default function Home() {
-  return (
-    <div className="divide-y divide-white/10">
-      <Hero />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Places />
-      <About />
-      <Contact />
-    </div>
-  );
+  return <SiteShell tabs={tabs} />;
 }

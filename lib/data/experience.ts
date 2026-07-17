@@ -5,6 +5,8 @@ export type ExperienceEntry = {
   dates: string;
   description: string;
   tags: string[];
+  /** Optional company link. When set, the org name becomes a link. */
+  href?: string;
 };
 
 export const experience: ExperienceEntry[] = [
