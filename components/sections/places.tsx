@@ -96,7 +96,7 @@ export function Places() {
             Photography
           </h2>
           <p className="mt-2 mb-10 text-sm text-muted-foreground">
-            My photos as a beginner photographer.
+            My favourite photos as a beginner photographer.
           </p>
         </div>
 

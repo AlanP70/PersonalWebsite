@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tooling / agent state
+/.claude
+/.tokensave
+/.tokensave/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

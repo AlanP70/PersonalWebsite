@@ -66,7 +66,7 @@ export function Hero() {
           Computer Science student &amp; software developer — real-time
           systems, ML tooling, and automation.
         </p>
-        <p className="text-sm text-muted-foreground">Based in [my city]</p>
+        <p className="text-sm text-muted-foreground">Based in the Greater Toronto Area</p>
       </div>
     </section>
   );
