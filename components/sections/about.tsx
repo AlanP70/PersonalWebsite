@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { FadeIn } from "@/components/ui/fade-in";
 import { Separator } from "@/components/ui/separator";
 import { certifications } from "@/lib/data/skills";
 
@@ -8,12 +9,12 @@ const languages = ["EN", "FR", "RU"];
 export function About() {
   return (
     <section id="about" aria-label="About" className="py-24">
-      <div className="section-container">
-        <h2 className="mb-12 font-heading text-3xl font-bold sm:text-4xl">
-          <span className="mr-3 text-muted-foreground/50">04</span>
-          About
-        </h2>
-        <div className="glass-panel grid gap-8 p-8 sm:grid-cols-[2fr_1fr]">
+      <FadeIn>
+        <div className="section-container">
+          <h2 className="mb-10 font-heading text-3xl font-bold sm:text-4xl">
+            <span className="mr-3 text-muted-foreground/50">05</span>
+            About
+          </h2>
           <div className="space-y-4 text-foreground/90">
             <p>
               CS student (cybersecurity emphasis) at the University of
@@ -29,7 +30,8 @@ export function About() {
               D5500.
             </p>
           </div>
-          <div className="space-y-6">
+
+          <div className="mt-8 space-y-6">
             <div>
               <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
                 Languages
@@ -57,21 +59,21 @@ export function About() {
               </ul>
             </div>
           </div>
-        </div>
 
-        <Separator className="my-10" />
+          <Separator className="my-10" />
 
-        <div>
-          <h3 className="mb-4 font-heading text-lg font-semibold">Certifications</h3>
-          <ul className="space-y-2">
-            {certifications.map((cert) => (
-              <li key={cert.name} className="text-sm text-muted-foreground">
-                {cert.name} <span className="text-muted-foreground/60">— {cert.issuer}</span>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <h3 className="mb-4 font-heading text-lg font-semibold">Certifications</h3>
+            <ul className="space-y-2">
+              {certifications.map((cert) => (
+                <li key={cert.name} className="text-sm text-muted-foreground">
+                  {cert.name} <span className="text-muted-foreground/60">— {cert.issuer}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      </FadeIn>
     </section>
   );
 }

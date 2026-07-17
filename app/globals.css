@@ -48,33 +48,6 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --animate-marquee: marquee var(--duration) infinite linear;
-  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
-  --animate-aurora: aurora 60s linear infinite;
-  @keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
-    }
-  to {
-    background-position: 350% 50%, 350% 50%;
-    }
-  }
-  @keyframes marquee {
-  from {
-    transform: translateX(0);
-    }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-    }
-  }
-  @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-    }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
-    }
-  }
 }
 
 /*
@@ -147,7 +120,10 @@
 
 @layer components {
   .section-container {
-    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
+    @apply mx-auto w-full max-w-[42rem] px-6 sm:px-8;
+  }
+  .section-container-wide {
+    @apply mx-auto w-full max-w-3xl px-6 sm:px-8;
   }
   .glass-panel {
     @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm;

@@ -4,6 +4,8 @@ export type Project = {
   tags: string[];
   link?: { label: string; href: string };
   featured?: boolean;
+  /** Optional thumbnail under /public. Falls back to a placeholder gradient when unset. */
+  image?: string;
 };
 
 export const projects: Project[] = [

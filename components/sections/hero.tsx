@@ -1,51 +1,73 @@
-import { ArrowRight, Download, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AuroraBackground } from "@/components/ui/aurora-background";
-import { GithubIcon } from "@/components/icons";
+import fs from "node:fs";
+import path from "node:path";
+import Image from "next/image";
 import { links } from "@/lib/data/links";
+
+const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "me.jpg"));
 
 export function Hero() {
   return (
-    <section id="main" aria-label="Introduction">
-      <AuroraBackground className="min-h-[90vh] items-start justify-center">
-        <div className="section-container flex flex-col items-start gap-6 py-24">
-          <p className="text-sm font-medium tracking-wide text-muted-foreground">
-            Software Developer &middot; Class of 2030
-          </p>
-          <h1 className="glow-text font-heading text-5xl font-bold tracking-tight sm:text-7xl">
-            Alan Pipko
-          </h1>
-          <p className="max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Computer Science student & software developer — real-time systems,
-            ML tooling, and automation.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            University of Guelph &middot; Trilingual (EN / FR / RU)
-          </p>
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Button render={<a href="#projects" />} size="lg">
-              View Projects
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Button>
-            <Button render={<a href={links.resume} download />} size="lg" variant="outline">
-              <Download className="size-4" aria-hidden="true" />
-              Resume
-            </Button>
-            <Button
-              render={<a href={links.github} target="_blank" rel="noopener noreferrer" />}
-              size="lg"
-              variant="ghost"
-            >
-              <GithubIcon className="size-4" aria-hidden="true" />
-              GitHub
-            </Button>
-            <Button render={<a href="#contact" />} size="lg" variant="ghost">
-              <Mail className="size-4" aria-hidden="true" />
-              Contact
-            </Button>
-          </div>
-        </div>
-      </AuroraBackground>
+    <section id="main" aria-label="Introduction" className="relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(55% 45% at 50% 0%, rgba(59,130,246,0.18) 0%, rgba(6,11,24,0) 70%)",
+        }}
+      />
+      <div className="section-container flex flex-col items-start gap-5 py-24 sm:py-28">
+        {hasPhoto && (
+          <Image
+            src="/me.jpg"
+            alt="Alan Pipko"
+            width={80}
+            height={80}
+            className="rounded-full border border-white/10 object-cover"
+          />
+        )}
+        <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl">
+          Alan Pipko
+        </h1>
+        <nav
+          aria-label="Social links"
+          className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground"
+        >
+          <a
+            href={links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            GitHub
+          </a>
+          <span aria-hidden="true">/</span>
+          <a
+            href={links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            LinkedIn
+          </a>
+          <span aria-hidden="true">/</span>
+          <a href={links.resume} download className="transition-colors hover:text-foreground">
+            Resume
+          </a>
+          <span aria-hidden="true">/</span>
+          <a
+            href={`mailto:${links.email}`}
+            className="transition-colors hover:text-foreground"
+          >
+            Email
+          </a>
+        </nav>
+        <p className="max-w-lg text-base text-foreground/90 sm:text-lg">
+          Computer Science student &amp; software developer — real-time
+          systems, ML tooling, and automation.
+        </p>
+        <p className="text-sm text-muted-foreground">Based in [my city]</p>
+      </div>
     </section>
   );
 }
