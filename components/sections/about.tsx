@@ -29,7 +29,10 @@ export function About() {
           className="mb-6 rounded-full border border-border object-cover"
         />
       )}
-      <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+      <h1
+        title="↑ ↑ ↓ ↓ ← → ← → B A"
+        className="font-heading text-3xl font-bold tracking-tight sm:text-4xl"
+      >
         Alan Pipko
       </h1>
       <p className="mt-4 max-w-xl text-base text-foreground/90 sm:text-lg">

@@ -19,7 +19,7 @@ export const projects: Project[] = [
   {
     title: "EuraAI",
     description:
-      "Math-education web app with an interactive whiteboard. Built the full auth system — Google OAuth2, email/password login, and JWT sessions.",
+      "Math-education web app with an interactive whiteboard. Built a full auth system — Google OAuth2, email/password login, and JWT sessions.",
     tags: ["FastAPI", "React", "TypeScript", "SQLite", "OpenAI", "OAuth2", "JWT"],
     link: { label: "View website", href: "https://euralearn.com/" },
     featured: true,

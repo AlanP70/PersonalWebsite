@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Instrument_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Footer } from "@/components/footer";
+import { KonamiEasterEgg } from "@/components/easter-egg/konami";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -72,6 +73,7 @@ export default function RootLayout({
           </a>
           {children}
           <Footer />
+          <KonamiEasterEgg />
         </ThemeProvider>
       </body>
     </html>
