@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import type {
+  KeyboardEvent as ReactKeyboardEvent,
+  TouchEvent as ReactTouchEvent,
+} from "react";
 
 const COLS = 24;
 const ROWS = 14;
@@ -100,6 +103,20 @@ export function Snake({ onExit }: { onExit: () => void }) {
     return () => clearInterval(id);
   }, []);
 
+  const restart = () => {
+    const fresh = initGame();
+    gameRef.current = fresh;
+    setGame(fresh);
+  };
+
+  // Queue a turn, ignoring direct reversals into the snake's own neck.
+  const steer = (dir: Cell) => {
+    const g = gameRef.current;
+    if (g.over) return;
+    if (dir.x === -g.dir.x && dir.y === -g.dir.y) return;
+    gameRef.current = { ...g, nextDir: dir };
+  };
+
   const onKeyDown = (event: ReactKeyboardEvent) => {
     if (event.key === "Escape") {
       event.preventDefault();
@@ -115,9 +132,7 @@ export function Snake({ onExit }: { onExit: () => void }) {
     if (g.over) {
       if (event.key === "Enter") {
         event.preventDefault();
-        const fresh = initGame();
-        gameRef.current = fresh;
-        setGame(fresh);
+        restart();
       }
       return;
     }
@@ -125,9 +140,40 @@ export function Snake({ onExit }: { onExit: () => void }) {
     const dir = KEY_DIRS[event.key.toLowerCase()];
     if (!dir) return;
     event.preventDefault();
-    // Ignore direct reversals into the snake's own neck.
-    if (dir.x === -g.dir.x && dir.y === -g.dir.y) return;
-    gameRef.current = { ...g, nextDir: dir };
+    steer(dir);
+  };
+
+  // Swipe steering for touch — the mobile stand-in for arrow keys. A short
+  // drag under the threshold counts as a tap (used to restart on game over).
+  const touchStartRef = useRef<Cell | null>(null);
+  const SWIPE_THRESHOLD = 24;
+
+  const onTouchStart = (event: ReactTouchEvent) => {
+    const t = event.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const onTouchEnd = (event: ReactTouchEvent) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start) return;
+
+    const t = event.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+
+    if (absX < SWIPE_THRESHOLD && absY < SWIPE_THRESHOLD) {
+      if (gameRef.current.over) restart();
+      return;
+    }
+
+    if (absX > absY) {
+      steer(dx > 0 ? { x: 1, y: 0 } : { x: -1, y: 0 });
+    } else {
+      steer(dy > 0 ? { x: 0, y: 1 } : { x: 0, y: -1 });
+    }
   };
 
   const rows: string[] = [];
@@ -148,14 +194,16 @@ export function Snake({ onExit }: { onExit: () => void }) {
       ref={containerRef}
       tabIndex={0}
       onKeyDown={onKeyDown}
-      aria-label="Snake game. Use arrow keys or WASD to move, Escape to quit."
-      className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-3 outline-none"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      aria-label="Snake game. Use arrow keys or WASD to move, or swipe on touch. Escape to quit."
+      className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-3 outline-none touch-none"
     >
       <div className="flex w-full max-w-[22rem] items-center justify-between text-xs text-zinc-500">
         <span>
           score: <span className="text-zinc-200">{game.score}</span>
         </span>
-        <span aria-hidden="true">↑↓←→ / wasd · esc quits</span>
+        <span aria-hidden="true">swipe / ↑↓←→ / wasd</span>
       </div>
       <pre
         aria-hidden="true"
@@ -167,7 +215,7 @@ export function Snake({ onExit }: { onExit: () => void }) {
         <div className="text-center text-xs">
           <div className="text-zinc-100">game over — score {game.score}</div>
           <div className="mt-1 text-zinc-500">
-            press enter to play again · esc to quit
+            tap or press enter to play again
           </div>
         </div>
       )}

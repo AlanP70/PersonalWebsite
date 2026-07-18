@@ -187,9 +187,10 @@ export function Terminal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={() => (mode === "snake" ? setMode("terminal") : onClose())}
-            className="ml-auto rounded px-1.5 py-0.5 text-[0.7rem] text-zinc-500 transition-colors hover:bg-white/10 hover:text-zinc-200"
+            aria-label={mode === "snake" ? "Exit game" : "Close terminal"}
+            className="ml-auto rounded px-2 py-0.5 text-[0.7rem] text-zinc-500 transition-colors hover:bg-white/10 hover:text-zinc-200"
           >
-            {mode === "snake" ? "exit game" : "esc"}
+            {mode === "snake" ? "exit game ✕" : "✕"}
           </button>
         </div>
 

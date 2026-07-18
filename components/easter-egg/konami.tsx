@@ -17,6 +17,11 @@ const SEQUENCE = [
   "a",
 ];
 
+// Dispatched by the footer hint on touch devices to open the terminal, since
+// phones have no arrow keys to type the sequence. Desktop never fires this —
+// there the key sequence stays the only way in.
+export const OPEN_TERMINAL_EVENT = "open-hidden-terminal";
+
 // Module-level guard so the console note prints exactly once, even with
 // React StrictMode's double-invoked effects in development.
 let consolePrinted = false;
@@ -69,6 +74,13 @@ export function KonamiEasterEgg() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
+
+  // Mobile entry point: the footer hint dispatches this on tap.
+  useEffect(() => {
+    const openFromTap = () => setOpen(true);
+    window.addEventListener(OPEN_TERMINAL_EVENT, openFromTap);
+    return () => window.removeEventListener(OPEN_TERMINAL_EVENT, openFromTap);
+  }, []);
 
   if (!open) return null;
   return <Terminal onClose={() => setOpen(false)} />;
