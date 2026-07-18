@@ -158,6 +158,235 @@
   }
 }
 
+/*
+  Tasteful transitions. Everything here is gated on `no-preference`, and the
+  JS entry points (tab crossfade, theme reveal) skip themselves under reduced
+  motion too, so a reduced-motion visitor just gets instant swaps.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  /* Staggered content reveal: a tab panel's blocks and list rows rise in one
+     after another when the panel mounts/activates (SiteShell adds .tab-reveal
+     and remounts it per activation to replay this). */
+  @keyframes tab-reveal-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .tab-reveal > section > :not(ul):not(ol),
+  .tab-reveal > section :is(ul, ol) > li {
+    animation: tab-reveal-rise 300ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+
+  /* ~45ms between successive items; list rows start just after the heading.
+     Trailing items past the enumerated set share the final delay so the whole
+     stagger still wraps up quickly. */
+  .tab-reveal > section > :not(ul):not(ol):nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .tab-reveal > section > :not(ul):not(ol):nth-child(2) {
+    animation-delay: 45ms;
+  }
+  .tab-reveal > section > :not(ul):not(ol):nth-child(3) {
+    animation-delay: 90ms;
+  }
+  .tab-reveal > section > :not(ul):not(ol):nth-child(4) {
+    animation-delay: 135ms;
+  }
+  .tab-reveal > section > :not(ul):not(ol):nth-child(n + 5) {
+    animation-delay: 180ms;
+  }
+
+  .tab-reveal > section :is(ul, ol) > li:nth-child(1) {
+    animation-delay: 45ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(2) {
+    animation-delay: 90ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(3) {
+    animation-delay: 135ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(4) {
+    animation-delay: 180ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(5) {
+    animation-delay: 225ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(6) {
+    animation-delay: 270ms;
+  }
+  .tab-reveal > section :is(ul, ol) > li:nth-child(n + 7) {
+    animation-delay: 315ms;
+  }
+
+  /* About hero: stagger greeting -> name -> intro -> status -> socials (and the
+     photo) individually instead of fading the whole block in at once. Reuses
+     the tab-reveal-rise keyframe above. */
+  .tab-reveal > section > .hero-reveal {
+    animation: none;
+  }
+  .hero-reveal__item {
+    animation: tab-reveal-rise 300ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  .hero-reveal__item:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .hero-reveal__item:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .hero-reveal__item:nth-child(3) {
+    animation-delay: 100ms;
+  }
+  .hero-reveal__item:nth-child(4) {
+    animation-delay: 150ms;
+  }
+  .hero-reveal__item:nth-child(5) {
+    animation-delay: 200ms;
+  }
+  .hero-reveal__item:nth-child(n + 6) {
+    animation-delay: 250ms;
+  }
+
+  /* Trilingual greeting: each swapped word eases in. */
+  @keyframes greeting-swap {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .greeting-swap {
+    animation: greeting-swap 300ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+}
+
+/*
+  Site-wide background texture: a single fixed, full-viewport overlay rendered
+  once in the root layout (<div class="site-texture">), so it covers every tab
+  edge to edge with no container seam. z-index:-10 keeps it behind all content
+  but above the propagated body background; pointer-events:none so it never
+  intercepts clicks. The element carries a faint dot-grid; its ::before adds a
+  monochrome filmic grain. No colour, no visible repeat, both themes.
+*/
+.site-texture {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  background-image: radial-gradient(rgb(0 0 0 / 4%) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+.dark .site-texture {
+  background-image: radial-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px);
+}
+.site-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Grain over the placeholder frame so the empty slot reads as an intentional
+   textured surface rather than a flat dark square. */
+.about-portrait__ph {
+  position: relative;
+}
+.about-portrait__ph::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+  Organization logos rendered as a monochrome silhouette in the theme's
+  foreground colour, so real (often colourful) logos still fit the palette and
+  stay visible on both light and dark.
+*/
+.org-logo {
+  filter: grayscale(1) brightness(0);
+  opacity: 0.75;
+}
+.dark .org-logo {
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+/*
+  Live GitHub contribution graph (a colourful external SVG) desaturated into
+  the monochrome palette. On dark, invert flips the light empty cells down into
+  the background while lifting the filled cells, so it reads in both themes.
+*/
+.github-graph {
+  filter: grayscale(1) contrast(1.1);
+  opacity: 0.9;
+}
+.dark .github-graph {
+  filter: grayscale(1) invert(1) contrast(1.1);
+  opacity: 0.9;
+}
+
+/*
+  Terminal cursor after the hero line. Static (visible) under reduced motion;
+  blinks otherwise. currentColor matches the surrounding text.
+*/
+.term-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.05em;
+  margin-left: 0.15em;
+  vertical-align: -0.16em;
+  background-color: currentColor;
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes term-blink {
+    0%,
+    49% {
+      opacity: 0.75;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .term-cursor {
+    animation: term-blink 1.1s steps(1) infinite;
+  }
+}
+
+/* Tab switch: a quick, smooth crossfade via the default root transition. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* Theme toggle: suppress the crossfade so only the JS-driven clip-path circle
+   animates -- the new theme wipes in over the old from the button's position. */
+html.theme-vt::view-transition-old(root),
+html.theme-vt::view-transition-new(root) {
+  animation: none;
+}
+html.theme-vt::view-transition-new(root) {
+  z-index: 1;
+}
+html.theme-vt::view-transition-old(root) {
+  z-index: 0;
+}
+
 @layer components {
   .section-container {
     @apply mx-auto w-full max-w-[42rem] px-6 sm:px-8;

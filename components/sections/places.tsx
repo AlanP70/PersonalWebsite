@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { photos } from "@/lib/data/places";
+import { SectionHeading } from "@/components/section-heading";
 
 const SCROLL_SPEED = 0.4; // px per animation frame — slow, continuous drift
 const RESUME_DELAY = 1200; // ms after the user lets go before auto-scroll resumes
@@ -89,10 +90,8 @@ export function Places() {
   return (
     <section aria-label="Photography" className="py-14 sm:py-16">
       <div className="section-container">
-        <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
-          Photography
-        </h2>
-        <p className="mt-2 mb-8 text-sm text-muted-foreground">
+        <SectionHeading>Photography</SectionHeading>
+        <p className="-mt-6 mb-8 text-sm text-muted-foreground">
           My favourite photos as a beginner photographer.
         </p>
       </div>

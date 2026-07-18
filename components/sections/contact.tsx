@@ -1,5 +1,6 @@
 import { FileText, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { SectionHeading } from "@/components/section-heading";
 import { links } from "@/lib/data/links";
 
 const channels = [
@@ -31,11 +32,9 @@ const channels = [
 export function Contact() {
   return (
     <section aria-label="Contact" className="section-container py-14 sm:py-16">
-      <h2 className="mb-4 font-heading text-2xl font-bold tracking-tight sm:text-3xl">
-        Contact
-      </h2>
-      <p className="mb-8 max-w-xl text-muted-foreground">
-        Open to SWE internship opportunities — reach out anytime.
+      <SectionHeading>Contact</SectionHeading>
+      <p className="-mt-4 mb-8 max-w-xl text-muted-foreground">
+        Open to internship opportunities — reach out anytime.
       </p>
       <ul className="flex flex-col gap-3 text-sm">
         {channels.map((channel) => {

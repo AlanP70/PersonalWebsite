@@ -6,15 +6,15 @@ export type SkillGroup = {
 export const skillGroups: SkillGroup[] = [
   {
     category: "Languages",
-    items: ["Python", "Java", "TypeScript", "JavaScript"],
+    items: ["C", "C#", "Java", "Python", "SQL", "JavaScript", "TypeScript", "HTML/CSS"],
   },
   {
     category: "Frameworks",
-    items: ["JavaFX", "React", "Next.js", "FastAPI"],
+    items: ["React", "JavaFX", "Next.js", "FastAPI", "YOLO", "PostgreSQL", "MonoGame", "Tkinter", "Pynput"],
   },
   {
     category: "Tools",
-    items: ["Git", "SQLite", "pandas", "YOLO", "REST APIs", "Automation & Scripting"],
+    items: ["Git", "Docker", "Vite", "Render", "Linux Server", "Valgrind", "Makefile", "Wireshark", "Figma"],
   },
   {
     category: "Security",
@@ -25,6 +25,6 @@ export const skillGroups: SkillGroup[] = [
 export const certifications = [
   {
     name: "IBM Cybersecurity Fundamentals",
-    issuer: "Credly",
+    issuer: "IBM SkillsBuild",
   },
 ];

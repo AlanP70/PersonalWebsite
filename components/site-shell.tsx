@@ -1,21 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import type { KeyboardEvent, ReactNode } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { withViewTransition } from "@/lib/view-transitions";
 import { cn } from "@/lib/utils";
 
 export type TabDef = { id: string; label: string; panel: ReactNode };
 
 export function SiteShell({ tabs }: { tabs: TabDef[] }) {
   const [active, setActive] = useState(tabs[0].id);
+  // Bumped on every activation so the active panel's reveal wrapper remounts
+  // and its CSS stagger replays (a `hidden` toggle alone wouldn't re-trigger).
+  const [revealNonce, setRevealNonce] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Deep-linking + back/forward: keep the active tab in sync with the URL hash.
   useEffect(() => {
     const applyHash = () => {
       const id = window.location.hash.replace(/^#/, "");
-      if (tabs.some((t) => t.id === id)) setActive(id);
+      if (tabs.some((t) => t.id === id)) {
+        setActive(id);
+        setRevealNonce((n) => n + 1);
+      }
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
@@ -23,9 +31,17 @@ export function SiteShell({ tabs }: { tabs: TabDef[] }) {
   }, [tabs]);
 
   const selectTab = useCallback((id: string) => {
-    setActive(id);
-    // replaceState (not a hash assignment) so switching tabs never scrolls.
-    window.history.replaceState(null, "", `#${id}`);
+    // The View Transition crossfades the old panel out; flushSync commits the
+    // swap synchronously so the API captures the new panel (whose items start
+    // hidden), letting the CSS stagger reveal them once the crossfade lands.
+    withViewTransition(() => {
+      flushSync(() => {
+        setActive(id);
+        setRevealNonce((n) => n + 1);
+      });
+      // replaceState (not a hash assignment) so switching tabs never scrolls.
+      window.history.replaceState(null, "", `#${id}`);
+    });
   }, []);
 
   const onKeyDown = (event: KeyboardEvent, index: number) => {
@@ -82,7 +98,7 @@ export function SiteShell({ tabs }: { tabs: TabDef[] }) {
                   onClick={() => selectTab(tab.id)}
                   onKeyDown={(event) => onKeyDown(event, index)}
                   className={cn(
-                    "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    "shrink-0 rounded-full px-3.5 py-1.5 font-mono text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     selected
                       ? "bg-accent text-foreground"
                       : "text-muted-foreground hover:text-foreground",
@@ -97,19 +113,29 @@ export function SiteShell({ tabs }: { tabs: TabDef[] }) {
       </header>
 
       <main id="main" className="flex-1">
-        {tabs.map((tab) => (
-          <div
-            key={tab.id}
-            role="tabpanel"
-            id={`panel-${tab.id}`}
-            aria-labelledby={`tab-${tab.id}`}
-            hidden={tab.id !== active}
-            tabIndex={0}
-            className="focus-visible:outline-none"
-          >
-            {tab.panel}
-          </div>
-        ))}
+        {tabs.map((tab) => {
+          const selected = tab.id === active;
+          return (
+            <div
+              key={tab.id}
+              role="tabpanel"
+              id={`panel-${tab.id}`}
+              aria-labelledby={`tab-${tab.id}`}
+              hidden={!selected}
+              tabIndex={0}
+              className="focus-visible:outline-none"
+            >
+              {/* Remounting via a changing key on activation replays the CSS
+                  stagger; idle panels keep a stable key so they don't thrash. */}
+              <div
+                key={selected ? `reveal-${revealNonce}` : "idle"}
+                className={selected ? "tab-reveal" : undefined}
+              >
+                {tab.panel}
+              </div>
+            </div>
+          );
+        })}
       </main>
     </>
   );

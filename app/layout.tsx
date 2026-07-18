@@ -59,6 +59,9 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${instrumentSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Full-viewport background texture — fixed, behind all content, covers
+            every tab edge to edge (see .site-texture in globals.css). */}
+        <div aria-hidden="true" className="site-texture" />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

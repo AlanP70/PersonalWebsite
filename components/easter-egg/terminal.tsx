@@ -42,7 +42,7 @@ const HELP_LINES = [
 ];
 
 const WHOAMI =
-  "alan pipko — cs student · builder of real-time systems, ml tooling & automations. probably debugging something right now.";
+  "alan pipko — cs student · builder of real-time systems, ml tooling & automations.";
 
 type Mode = "terminal" | "snake";
 
