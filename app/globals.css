@@ -348,20 +348,6 @@
 }
 
 /*
-  Live GitHub contribution graph (a colourful external SVG) desaturated into
-  the monochrome palette. On dark, invert flips the light empty cells down into
-  the background while lifting the filled cells, so it reads in both themes.
-*/
-.github-graph {
-  filter: grayscale(1) contrast(1.1);
-  opacity: 0.9;
-}
-.dark .github-graph {
-  filter: grayscale(1) invert(1) contrast(1.1);
-  opacity: 0.9;
-}
-
-/*
   Terminal cursor after the hero line. Static (visible) under reduced motion;
   blinks otherwise. Carries the amber accent so it reads as a live prompt.
 */
@@ -416,5 +402,10 @@ html.theme-vt::view-transition-old(root) {
   }
   .section-container-wide {
     @apply mx-auto w-full max-w-3xl px-6 sm:px-8;
+  }
+  /* Wider than the reading column — the galleries (Projects, Photography) break
+     the single-column rhythm and give the work room to breathe. */
+  .section-container-gallery {
+    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
   }
 }

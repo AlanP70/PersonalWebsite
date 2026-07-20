@@ -16,7 +16,6 @@ export const projects: Project[] = [
     description:
       "Python pipeline that pulls Meta Marketing API and TikTok ad-spend data, parses billing PDFs/Excel, and auto-generates monthly invoices — scheduled via Windows Task Scheduler for an accounting client. [add metric — hours saved / month]",
     tags: ["Python", "Meta Marketing API", "TikTok API", "Automation"],
-    featured: true,
     badges: ["Client project"],
   },
   {
@@ -27,6 +26,7 @@ export const projects: Project[] = [
     link: { label: "live site", href: "https://euralearn.com/" },
     featured: true,
     badges: ["Live"],
+    image: "projects/eura.png",
   },
   {
     title: "Real-Time Data Visualization",
@@ -41,7 +41,9 @@ export const projects: Project[] = [
       "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled the image dataset and a pipeline converting live counts into wait-time estimates. [add metric — not on resume]",
     tags: ["YOLO", "Python", "Computer Vision"],
     link: { label: "live site", href: "https://linechecks.com/" },
+    featured: true,
     badges: ["Internship project"],
+    image: "projects/linechecks.png",
   },
   {
     title: "SnipSmart",
@@ -50,6 +52,7 @@ export const projects: Project[] = [
     tags: ["JavaScript", "React", "JSON", "Chrome Extension", "OCR", "Translation"],
     link: { label: "view repo", href: "https://github.com/AlanP70/SnipSmart" },
     badges: ["Open source"],
+    image: "projects/snipsmart.png",
   },
   {
     title: "This Website",
@@ -58,5 +61,6 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
     link: { label: "view repo", href: "https://github.com/AlanP70/PersonalWebsite" },
     badges: ["Open source"],
+    image: "projects/personal-website.png",
   },
 ];

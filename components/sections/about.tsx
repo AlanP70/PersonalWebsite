@@ -4,8 +4,9 @@ import Image from "next/image";
 import { Greeting } from "@/components/sections/greeting";
 import { SectionDivider } from "@/components/section-divider";
 import { TechPills } from "@/components/pills";
-import { GithubGraph } from "@/components/github-graph";
+import { ProjectCover } from "@/components/project-cover";
 import { links } from "@/lib/data/links";
+import { projects } from "@/lib/data/projects";
 import { skillGroups, certifications } from "@/lib/data/skills";
 
 const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "Portrait.jpg"));
@@ -126,6 +127,42 @@ export function About() {
         </p>
       </div>
 
+      {/* Featured work — a compact teaser so a visitor landing here immediately
+          sees real projects, with a path into the Projects tab (the tab system
+          deep-links on the #projects hash). */}
+      <div className="mt-10">
+        <div className="mb-3 flex items-baseline justify-between gap-4">
+          <p className={metaLabel}>Featured work</p>
+          <a
+            href="#projects"
+            className="font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
+          >
+            all {projects.length} projects →
+          </a>
+        </div>
+        <ul className="grid grid-cols-3 gap-3">
+          {projects
+            .filter((project) => project.image)
+            .slice(0, 3)
+            .map((project) => (
+              <li key={project.title}>
+                <a
+                  href="#projects"
+                  aria-label={`${project.title} — see in Projects`}
+                  className="group block focus-visible:outline-none"
+                >
+                  <span className="relative block aspect-[16/10] overflow-hidden rounded-lg border border-border bg-panel/50 group-focus-visible:ring-2 group-focus-visible:ring-ring">
+                    <ProjectCover title={project.title} image={project.image} />
+                  </span>
+                  <span className="mt-1.5 block truncate font-mono text-[0.7rem] text-muted-foreground transition-colors group-hover:text-foreground">
+                    {project.title}
+                  </span>
+                </a>
+              </li>
+            ))}
+        </ul>
+      </div>
+
       <div className="mt-10 space-y-6">
         {skillGroups.map((group) => (
           <div
@@ -149,10 +186,6 @@ export function About() {
           <p className={`mb-2 ${metaLabel}`}>Interests</p>
           <TechPills items={interests} />
         </div>
-      </div>
-
-      <div className="mt-10">
-        <GithubGraph />
       </div>
 
       <SectionDivider />
