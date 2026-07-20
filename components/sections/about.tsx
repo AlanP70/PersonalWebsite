@@ -8,7 +8,7 @@ import { GithubGraph } from "@/components/github-graph";
 import { links } from "@/lib/data/links";
 import { skillGroups, certifications } from "@/lib/data/skills";
 
-const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "me.jpg"));
+const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "Portrait.jpg"));
 
 // Easy to edit: the status line and the intro sentence.
 const status = "Currently interning at Vibraint AI";
@@ -59,8 +59,8 @@ export function About() {
           </p>
           <p className="hero-reveal__item mt-5 flex items-center gap-2.5 font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">
             <span aria-hidden="true" className="relative flex size-2 shrink-0">
-              <span className="absolute inline-flex size-full rounded-full bg-foreground/25" />
-              <span className="relative inline-flex size-2 rounded-full bg-foreground/60" />
+              <span className="absolute inline-flex size-full rounded-full bg-accent-amber/30" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent-amber" />
             </span>
             {status}
           </p>
@@ -77,7 +77,7 @@ export function About() {
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                   {...(social.download ? { download: true } : {})}
-                  className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  className="underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
                 >
                   {social.label}
                 </a>
@@ -86,17 +86,17 @@ export function About() {
           </nav>
         </div>
 
-        {/* A modest portrait that balances the text. Drop public/me.jpg to fill
-            it; until then an intentional monochrome placeholder holds the frame. */}
+        {/* A modest portrait that balances the text. Drop public/Portrait.jpg to
+            fill it; until then an intentional monochrome placeholder holds the frame. */}
         <div className="hero-reveal__item">
           <div className="about-portrait relative aspect-[4/5] w-36 overflow-hidden rounded-xl border border-foreground/15 bg-gradient-to-br from-foreground/[0.09] via-foreground/[0.035] to-transparent sm:w-full">
             {hasPhoto ? (
               <Image
-                src="/me.jpg"
+                src="/Portrait.jpg"
                 alt="Alan Pipko"
                 fill
                 sizes="(max-width: 640px) 9rem, 11rem"
-                className="object-cover grayscale"
+                className="object-cover"
                 priority
               />
             ) : (

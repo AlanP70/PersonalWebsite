@@ -100,7 +100,7 @@ export function SiteShell({ tabs }: { tabs: TabDef[] }) {
                   className={cn(
                     "shrink-0 rounded-full px-3.5 py-1.5 font-mono text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     selected
-                      ? "bg-accent text-foreground"
+                      ? "bg-accent-amber/10 text-accent-amber"
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >

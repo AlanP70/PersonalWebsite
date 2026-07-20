@@ -47,7 +47,7 @@ export function Contact() {
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
                 {...(channel.download ? { download: true } : {})}
-                className="inline-flex items-center gap-2.5 font-medium text-foreground/90 transition-colors hover:text-foreground"
+                className="inline-flex items-center gap-2.5 font-medium text-foreground/90 transition-colors hover:text-accent-amber"
               >
                 <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
                 {channel.label}

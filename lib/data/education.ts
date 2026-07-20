@@ -16,7 +16,7 @@ export const education: EducationEntry[] = [
     dates: "Expected April 2030",
     logo: "logos/guelph.svg",
     courses: [
-      "Programming",
+      "Programming in C",
       "Data Structures",
       "Linear Algebra",
       "Discrete Mathematics",

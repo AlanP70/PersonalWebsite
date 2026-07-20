@@ -30,6 +30,9 @@
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+  /* Single amber accent, scoped to interactive affordances (active tab, link
+     hover, status pulse, terminal cursor). Retune/revert via --accent-amber. */
+  --color-accent-amber: var(--accent-amber);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -72,6 +75,8 @@
   --muted-foreground: #52525b;
   --accent: #e4e4e7;
   --accent-foreground: #18181b;
+  /* amber-700 — darker so it clears AA against the near-white light theme. */
+  --accent-amber: #b45309;
   --destructive: #dc2626;
   --border: rgb(0 0 0 / 10%);
   --input: rgb(0 0 0 / 12%);
@@ -109,6 +114,8 @@
   --muted-foreground: #a1a1aa;
   --accent: #262626;
   --accent-foreground: #ededed;
+  /* amber-500 — vibrant and high-contrast on the dark gray. */
+  --accent-amber: #f59e0b;
   --destructive: #f87171;
   --border: rgb(255 255 255 / 10%);
   --input: rgb(255 255 255 / 12%);
@@ -287,6 +294,22 @@
 .dark .site-texture {
   background-image: radial-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px);
 }
+/*
+  Cursor-reactive dot-grid (components/dot-grid.tsx). Fixed, full-viewport,
+  behind everything (below .site-texture so its film grain stays on top), never
+  intercepts clicks. Mounted only on pointer-fine, motion-OK devices.
+*/
+.site-dotgrid {
+  position: fixed;
+  inset: 0;
+  z-index: -11;
+  pointer-events: none;
+}
+/* While the canvas owns the dot layer, drop the CSS grid on .site-texture; its
+   film grain ::before is unaffected. Placed after the rules above so it wins. */
+.dotgrid-active .site-texture {
+  background-image: none;
+}
 .site-texture::before {
   content: "";
   position: absolute;
@@ -340,7 +363,7 @@
 
 /*
   Terminal cursor after the hero line. Static (visible) under reduced motion;
-  blinks otherwise. currentColor matches the surrounding text.
+  blinks otherwise. Carries the amber accent so it reads as a live prompt.
 */
 .term-cursor {
   display: inline-block;
@@ -348,14 +371,14 @@
   height: 1.05em;
   margin-left: 0.15em;
   vertical-align: -0.16em;
-  background-color: currentColor;
-  opacity: 0.7;
+  background-color: var(--accent-amber);
+  opacity: 0.85;
 }
 @media (prefers-reduced-motion: no-preference) {
   @keyframes term-blink {
     0%,
     49% {
-      opacity: 0.75;
+      opacity: 0.85;
     }
     50%,
     100% {

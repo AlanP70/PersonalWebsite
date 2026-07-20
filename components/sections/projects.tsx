@@ -22,7 +22,7 @@ export function Projects() {
                     href={project.link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    className="group inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent-amber"
                   >
                     {project.link.label}
                     <ArrowUpRight

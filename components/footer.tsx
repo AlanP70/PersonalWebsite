@@ -13,7 +13,7 @@ export function Footer() {
               href={links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-foreground"
+              className="underline underline-offset-4 hover:text-accent-amber"
             >
               source
             </a>

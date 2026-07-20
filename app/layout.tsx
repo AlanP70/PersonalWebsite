@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Instrument_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { DotGrid } from "@/components/dot-grid";
 import { Footer } from "@/components/footer";
 import { KonamiEasterEgg } from "@/components/easter-egg/konami";
 import "./globals.css";
@@ -60,7 +61,11 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         {/* Full-viewport background texture — fixed, behind all content, covers
-            every tab edge to edge (see .site-texture in globals.css). */}
+            every tab edge to edge (see .site-texture in globals.css). The
+            cursor-reactive DotGrid canvas sits just behind it and takes over the
+            dot layer on pointer-fine, motion-OK devices; the texture's film
+            grain still paints on top either way. */}
+        <DotGrid />
         <div aria-hidden="true" className="site-texture" />
         <ThemeProvider
           attribute="class"

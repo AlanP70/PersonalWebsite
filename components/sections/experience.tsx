@@ -25,7 +25,7 @@ export function Experience() {
                         href={entry.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                        className="underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
                       >
                         {entry.org}
                       </a>
