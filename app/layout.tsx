@@ -1,21 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Instrument_Sans } from "next/font/google";
+import { Saira_Condensed, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import Image from "next/image";
 import { ThemeProvider } from "@/components/theme-provider";
-import { DotGrid } from "@/components/dot-grid";
-import { Footer } from "@/components/footer";
+import { WebLattice } from "@/components/web-lattice";
 import { KonamiEasterEgg } from "@/components/easter-egg/konami";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+// Full-bleed backdrop photo (one of the owner's own, from public/places/). To
+// swap it, point this at any other file in public/places/ — a wide, dark
+// landscape/cityscape holds the navy scrim + text contrast best.
+const BACKDROP_PHOTO = "/places/Stars.jfif";
+
+// Saira Condensed (SIL OFL 1.1) — bold condensed uppercase for headings and HUD
+// chrome. Non-variable, so weights are enumerated.
+const sairaCondensed = Saira_Condensed({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  display: "swap",
 });
 
+// Instrument Sans (SIL OFL 1.1) — clean, readable sans for body copy.
 const instrumentSans = Instrument_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+// JetBrains Mono (SIL OFL 1.1) — monospace for readouts, stats and system text.
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-readout",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
 });
 
 const siteUrl = "https://alanpipko.dev";
@@ -43,8 +61,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f0f" },
+    { media: "(prefers-color-scheme: light)", color: "#f2f0ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0c0e" },
   ],
 };
 
@@ -57,15 +75,19 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${instrumentSans.variable} h-full antialiased`}
+      className={`${sairaCondensed.variable} ${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        {/* Full-viewport background texture — fixed, behind all content, covers
-            every tab edge to edge (see .site-texture in globals.css). The
-            cursor-reactive DotGrid canvas sits just behind it and takes over the
-            dot layer on pointer-fine, motion-OK devices; the texture's film
-            grain still paints on top either way. */}
-        <DotGrid />
+        {/* Full-viewport background stack — fixed, behind all content. A
+            darkened/desaturated backdrop photo sits at the bottom, a vignette +
+            scrim over it holds text contrast, then the cursor-reactive
+            WebLattice canvas (or its static web-mesh fallback) layers the HUD
+            mesh over the photo. The film grain always paints on top. */}
+        <div aria-hidden="true" className="site-photo">
+          <Image src={BACKDROP_PHOTO} alt="" fill priority sizes="100vw" />
+        </div>
+        <div aria-hidden="true" className="site-scrim" />
+        <WebLattice />
         <div aria-hidden="true" className="site-texture" />
         <ThemeProvider
           attribute="class"
@@ -75,12 +97,11 @@ export default function RootLayout({
         >
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-none focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
           >
             Skip to content
           </a>
           {children}
-          <Footer />
           <KonamiEasterEgg />
         </ThemeProvider>
       </body>

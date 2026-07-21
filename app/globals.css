@@ -9,6 +9,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
   --font-heading: var(--font-display);
+  /* HUD readouts / stats / system text use the mono. Adding --font-mono here
+     repoints every existing `font-mono` utility onto JetBrains Mono. */
+  --font-mono: var(--font-readout);
   --color-panel: var(--panel);
   --color-panel-foreground: var(--panel-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -30,9 +33,16 @@
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
-  /* Single amber accent, scoped to interactive affordances (active tab, link
-     hover, status pulse, terminal cursor). Retune/revert via --accent-amber. */
+  /* HUD accent tokens. The legacy `--accent-amber` name is kept (many
+     components reference `text-accent-amber` etc.) but repointed to the crimson
+     link tone so the whole site inherits the new accent without touching every
+     call site. `--color-crimson` / `--color-magenta` / `--color-steel` expose
+     the palette as first-class utilities for the redesign. */
   --color-accent-amber: var(--accent-amber);
+  --color-crimson: var(--crimson);
+  --color-crimson-bright: var(--crimson-bright);
+  --color-magenta: var(--magenta);
+  --color-steel: var(--steel);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -53,86 +63,129 @@
 }
 
 /*
-  Monochrome, neutral-gray theme. Dark is the default (next-themes toggles the
-  `.dark` class on <html>); both themes are strictly grayscale — no colored
-  accent. `--primary` is an inverted neutral (near-white on dark, near-black on
-  light) so buttons read as a clean tonal shift rather than a highlight.
+  Action-game menu-HUD palette (Marvel's Spider-Man menu system). A deep
+  navy/indigo base, a magenta→crimson gradient reserved for the accent bar/edges,
+  and cool cyan-white text. Dark is the hero; light is a restrained "tactical
+  briefing" variant on cool paper. Both drive the same magenta→crimson accent so
+  the two themes stay one system.
+
+  --crimson        primary accent / large-bold / edges (NOT small body text)
+  --crimson-bright hover / active / focus edges
+  --magenta        the pink end of the accent gradient
+  --accent-gradient  magenta→crimson bar (tab bar top edge, active underline)
+  --accent-amber   crimson link tone, darkened/brightened to clear AA as text
+  --steel          cool cyan readout accent
+  --panel-glass    translucent tinted panel fill (over the photo backdrop)
+  --scrim-tint     backdrop scrim so text holds contrast over the photo
+  --hud-line*      hairline panel borders (crimson / cyan, translucent)
+  Palette lives here; retune a single value to reskin the whole site.
 */
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
+  --background: #eef1f7;
+  --foreground: #101a2e;
   --panel: #ffffff;
-  --panel-foreground: #18181b;
+  --panel-glass: rgb(255 255 255 / 72%);
+  --panel-foreground: #101a2e;
   --card: #ffffff;
-  --card-foreground: #18181b;
+  --card-foreground: #101a2e;
   --popover: #ffffff;
-  --popover-foreground: #18181b;
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #52525b;
-  --accent: #e4e4e7;
-  --accent-foreground: #18181b;
-  /* amber-700 — darker so it clears AA against the near-white light theme. */
-  --accent-amber: #b45309;
+  --popover-foreground: #101a2e;
+  --primary: #c8123f;
+  --primary-foreground: #ffffff;
+  --secondary: #e2e7f1;
+  --secondary-foreground: #101a2e;
+  --muted: #e2e7f1;
+  --muted-foreground: #49597a;
+  --accent: #dde3ef;
+  --accent-foreground: #101a2e;
+  /* Crimson link tone, darkened so crimson-on-paper clears AA for small text. */
+  --accent-amber: #bc0f45;
   --destructive: #dc2626;
-  --border: rgb(0 0 0 / 10%);
-  --input: rgb(0 0 0 / 12%);
-  --ring: #71717a;
-  --chart-1: #71717a;
-  --chart-2: #a1a1aa;
-  --chart-3: #52525b;
-  --chart-4: #d4d4d8;
-  --chart-5: #3f3f46;
+  --border: rgb(20 40 80 / 14%);
+  --input: rgb(20 40 80 / 16%);
+  --ring: #c8123f;
+  --crimson: #c8123f;
+  --crimson-bright: #a80f36;
+  --crimson-dim: rgb(200 18 63 / 40%);
+  --magenta: #c81d7a;
+  --magenta-bright: #a8155f;
+  --accent-gradient: linear-gradient(90deg, #d81f86 0%, #c8123f 100%);
+  --steel: #0e7490;
+  --steel-dim: rgb(14 116 144 / 40%);
+  --hud-line: rgb(200 18 63 / 30%);
+  --hud-line-steel: rgb(14 116 144 / 24%);
+  /* Light scrim lightens the photo toward paper so dark ink stays readable. */
+  --scrim-tint: color-mix(in srgb, var(--background) 60%, transparent);
+  --scrim-edge: rgb(20 30 60 / 22%);
+  --chart-1: #c8123f;
+  --chart-2: #0e7490;
+  --chart-3: #c81d7a;
+  --chart-4: #3f6f86;
+  --chart-5: #49597a;
   --radius: 0.75rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #18181b;
-  --sidebar-primary: #18181b;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #e4e4e7;
-  --sidebar-accent-foreground: #18181b;
-  --sidebar-border: rgb(0 0 0 / 10%);
-  --sidebar-ring: #71717a;
+  --sidebar-foreground: #101a2e;
+  --sidebar-primary: #c8123f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dde3ef;
+  --sidebar-accent-foreground: #101a2e;
+  --sidebar-border: rgb(20 40 80 / 14%);
+  --sidebar-ring: #c8123f;
 }
 
 .dark {
-  --background: #0f0f0f;
-  --foreground: #ededed;
-  --panel: #1c1c1e;
-  --panel-foreground: #ededed;
-  --card: #1c1c1e;
-  --card-foreground: #ededed;
-  --popover: #1c1c1e;
-  --popover-foreground: #ededed;
-  --primary: #fafafa;
-  --primary-foreground: #18181b;
-  --secondary: #1c1c1e;
-  --secondary-foreground: #ededed;
-  --muted: #1c1c1e;
-  --muted-foreground: #a1a1aa;
-  --accent: #262626;
-  --accent-foreground: #ededed;
-  /* amber-500 — vibrant and high-contrast on the dark gray. */
-  --accent-amber: #f59e0b;
+  --background: #070b16;
+  --foreground: #e7effb;
+  --panel: #0e1630;
+  /* Translucent navy fill for the glass panels floating over the photo. Kept
+     opaque enough (74%) that small text still clears AA over bright photo spots. */
+  --panel-glass: rgb(15 23 48 / 74%);
+  --panel-foreground: #e7effb;
+  --card: #0e1630;
+  --card-foreground: #e7effb;
+  --popover: #0e1a34;
+  --popover-foreground: #e7effb;
+  --primary: #e8244b;
+  --primary-foreground: #ffffff;
+  --secondary: #14203f;
+  --secondary-foreground: #e7effb;
+  --muted: #101a33;
+  --muted-foreground: #93a4c4;
+  --accent: #17244a;
+  --accent-foreground: #e7effb;
+  /* Crimson-pink link tone, brightened to clear AA (4.5:1) as small text on the
+     navy glass panels. The deeper --crimson drives fills, edges and large type. */
+  --accent-amber: #ff6b8a;
   --destructive: #f87171;
-  --border: rgb(255 255 255 / 10%);
-  --input: rgb(255 255 255 / 12%);
-  --ring: #a1a1aa;
-  --chart-1: #a1a1aa;
-  --chart-2: #d4d4d8;
-  --chart-3: #71717a;
-  --chart-4: #52525b;
-  --chart-5: #e4e4e7;
-  --sidebar: #1c1c1e;
-  --sidebar-foreground: #ededed;
-  --sidebar-primary: #fafafa;
-  --sidebar-primary-foreground: #18181b;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #ededed;
-  --sidebar-border: rgb(255 255 255 / 10%);
-  --sidebar-ring: #a1a1aa;
+  --border: rgb(150 180 230 / 14%);
+  --input: rgb(150 180 230 / 18%);
+  --ring: #ff3d6a;
+  --crimson: #e8244b;
+  --crimson-bright: #ff3d6a;
+  --crimson-dim: rgb(232 36 75 / 45%);
+  --magenta: #ff2f9e;
+  --magenta-bright: #ff5cae;
+  --accent-gradient: linear-gradient(90deg, #ff2f9e 0%, #ff2d6f 45%, #e01b3d 100%);
+  --steel: #63d3ea;
+  --steel-dim: rgb(99 211 234 / 40%);
+  --hud-line: rgb(255 61 106 / 34%);
+  --hud-line-steel: rgb(99 211 234 / 26%);
+  /* Dark scrim heavily darkens the photo toward navy so cyan-white text holds. */
+  --scrim-tint: color-mix(in srgb, var(--background) 74%, transparent);
+  --scrim-edge: rgb(2 4 10 / 62%);
+  --chart-1: #e8244b;
+  --chart-2: #63d3ea;
+  --chart-3: #ff2f9e;
+  --chart-4: #5c7b91;
+  --chart-5: #93a4c4;
+  --sidebar: #0e1630;
+  --sidebar-foreground: #e7effb;
+  --sidebar-primary: #e8244b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #17244a;
+  --sidebar-accent-foreground: #e7effb;
+  --sidebar-border: rgb(150 180 230 / 14%);
+  --sidebar-ring: #ff3d6a;
 }
 
 @layer base {
@@ -167,7 +220,7 @@
 
 /*
   Tasteful transitions. Everything here is gated on `no-preference`, and the
-  JS entry points (tab crossfade, theme reveal) skip themselves under reduced
+  JS entry points (tab wipe, theme reveal) skip themselves under reduced
   motion too, so a reduced-motion visitor just gets instant swaps.
 */
 @media (prefers-reduced-motion: no-preference) {
@@ -273,48 +326,118 @@
   .greeting-swap {
     animation: greeting-swap 300ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
   }
+
+  /* Selection flash: a focused/selected list row gets a quick accent slide-in
+     on the diamond marker + a brief edge flash (menu-like responsiveness). */
+  @keyframes hud-select-flash {
+    from {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 /*
-  Site-wide background texture: a single fixed, full-viewport overlay rendered
-  once in the root layout (<div class="site-texture">), so it covers every tab
-  edge to edge with no container seam. z-index:-10 keeps it behind all content
-  but above the propagated body background; pointer-events:none so it never
-  intercepts clicks. The element carries a faint dot-grid; its ::before adds a
-  monochrome filmic grain. No colour, no visible repeat, both themes.
+  ── Full-bleed photographic backdrop ─────────────────────────────────────────
+  One of the site owner's own photos fills the viewport behind everything,
+  heavily darkened + desaturated toward the navy base. A vignette + gradient
+  scrim over it (`.site-scrim`) guarantees text contrast. The cursor-reactive
+  web-lattice (or its static-mesh fallback) then layers over the photo at low
+  opacity — mesh over image, never the sole background. Film grain paints last.
+  Layer order (all fixed, pointer-events:none, behind content):
+    -13 photo · -12 scrim · -11 lattice canvas · -10 static mesh + grain
+*/
+.site-photo {
+  position: fixed;
+  inset: 0;
+  z-index: -13;
+  pointer-events: none;
+}
+.site-photo img {
+  object-fit: cover;
+  /* Desaturate + darken so the photo reads as a tinted navy field, not a busy
+     picture competing with the HUD. */
+  filter: saturate(0.4) brightness(0.5) contrast(1.05);
+}
+.dark .site-photo img {
+  filter: saturate(0.32) brightness(0.34) contrast(1.08);
+}
+.site-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -12;
+  pointer-events: none;
+  background:
+    /* vignette — darker at the corners so the centre stays clearest */
+    radial-gradient(130% 100% at 50% 35%, transparent 42%, var(--scrim-edge) 100%),
+    /* top + bottom bands sit under the sticky chrome */
+    linear-gradient(
+      to bottom,
+      var(--scrim-edge) 0%,
+      transparent 22%,
+      transparent 74%,
+      var(--scrim-edge) 100%
+    ),
+    /* overall tint pulls the whole field toward the base colour */
+    var(--scrim-tint);
+}
+
+/*
+  Site-wide background: a static geometric web-lattice fallback (fixed,
+  full-viewport, rendered once in the root layout). On pointer-fine, motion-OK
+  devices the cursor-reactive WebLattice canvas (components/web-lattice.tsx)
+  takes over and this static mesh is dropped. Both stay low-contrast so text
+  over the photo + scrim remains readable. z-index keeps it behind content;
+  pointer-events:none so it never blocks clicks.
 */
 .site-texture {
   position: fixed;
   inset: 0;
   z-index: -10;
   pointer-events: none;
-  background-image: radial-gradient(rgb(0 0 0 / 4%) 1px, transparent 1px);
-  background-size: 30px 30px;
-}
-.dark .site-texture {
-  background-image: radial-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px);
+  opacity: 0.45;
+  background-image:
+    radial-gradient(var(--hud-line-steel) 0.5px, transparent 0.7px),
+    repeating-linear-gradient(
+      60deg,
+      var(--hud-line-steel) 0 1px,
+      transparent 1px 48px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      var(--hud-line-steel) 0 1px,
+      transparent 1px 48px
+    );
+  background-size:
+    7px 7px,
+    auto,
+    auto;
 }
 /*
-  Cursor-reactive dot-grid (components/dot-grid.tsx). Fixed, full-viewport,
-  behind everything (below .site-texture so its film grain stays on top), never
-  intercepts clicks. Mounted only on pointer-fine, motion-OK devices.
+  Cursor-reactive web-lattice canvas (components/web-lattice.tsx). Fixed,
+  full-viewport, over the photo but behind content, never intercepts clicks.
+  Mounted only on pointer-fine, motion-OK devices.
 */
-.site-dotgrid {
+.hud-lattice {
   position: fixed;
   inset: 0;
   z-index: -11;
   pointer-events: none;
+  opacity: 0.6;
 }
-/* While the canvas owns the dot layer, drop the CSS grid on .site-texture; its
-   film grain ::before is unaffected. Placed after the rules above so it wins. */
-.dotgrid-active .site-texture {
+/* While the canvas owns the mesh, drop the static one (grain stays). */
+.lattice-active .site-texture {
   background-image: none;
 }
 .site-texture::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.07;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -349,7 +472,7 @@
 
 /*
   Terminal cursor after the hero line. Static (visible) under reduced motion;
-  blinks otherwise. Carries the amber accent so it reads as a live prompt.
+  blinks otherwise. Carries the accent so it reads as a live prompt.
 */
 .term-cursor {
   display: inline-block;
@@ -376,14 +499,310 @@
   }
 }
 
-/* Tab switch: a quick, smooth crossfade via the default root transition. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 260ms;
-  animation-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+/*
+  ── HUD component system ─────────────────────────────────────────────────────
+  Angular, clipped-corner panels with a hairline crimson/cyan border that
+  follows the bevel (mask trick), bracket corners, and a diagonal slash divider.
+  Panels are translucent tinted glass floating over the photo backdrop. Built
+  once here and reused across every section. No rounded corners, no soft shadows.
+*/
+.hud-panel {
+  --bevel: 12px;
+  --hud-border: var(--hud-line);
+  position: relative;
+  background: var(--panel-glass);
+  backdrop-filter: blur(10px) saturate(1.1);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
+}
+/* Hairline border ring that traces the clipped shape: a 1px inset fill masked
+   to show only its padding edge. */
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: var(--hud-border);
+  clip-path: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.hud-panel--steel {
+  --hud-border: var(--hud-line-steel);
+}
+/* Interactive panels (project cards, list rows) sharpen their edge to crimson
+   and lift on hover/active, with a tight glow that hugs the clipped shape. */
+.hud-panel--interactive {
+  transition:
+    transform 200ms cubic-bezier(0.2, 0.6, 0.2, 1),
+    filter 200ms cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.hud-panel--interactive:hover {
+  --hud-border: var(--crimson);
+  filter: drop-shadow(0 0 5px var(--crimson-dim));
+}
+.hud-panel--interactive:hover,
+.hud-panel[data-active="true"] {
+  --hud-border: var(--crimson);
+}
+.hud-panel[data-active="true"] {
+  filter: drop-shadow(0 0 5px var(--crimson-dim));
 }
 
-/* Theme toggle: suppress the crossfade so only the JS-driven clip-path circle
+/* Bracket corners: four L-shaped crimson marks framing a panel or image. The
+   HudFrame component renders the four <span> corners; these place them. */
+.hud-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--crimson);
+  pointer-events: none;
+}
+.hud-corner--tl {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.hud-corner--tr {
+  top: -1px;
+  right: -1px;
+  border-left: 0;
+  border-bottom: 0;
+}
+.hud-corner--bl {
+  bottom: -1px;
+  left: -1px;
+  border-right: 0;
+  border-top: 0;
+}
+.hud-corner--br {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* Diagonal slash divider: a hairline with a skewed crimson cap. */
+.hud-divider {
+  position: relative;
+  height: 1px;
+  background: var(--hud-line);
+  border: 0;
+}
+.hud-divider::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 30px;
+  height: 7px;
+  background: var(--crimson);
+  transform: skewX(-45deg);
+  transform-origin: left;
+}
+
+/*
+  ── Marker language (Spider-Man difficulty/suit menus) ───────────────────────
+  A small outlined diamond marks the selected entry; selected list items get a
+  thin outlined box (not a filled highlight); small letter-spaced uppercase
+  labels sit above each panel. Reused by every restyled section.
+*/
+.hud-marker {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--crimson);
+  transform: rotate(45deg);
+  flex: none;
+}
+.hud-marker--filled {
+  background: var(--crimson);
+}
+/* Thin outlined selection box around an active list item. */
+.hud-select {
+  position: relative;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color 160ms cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.hud-select[data-active="true"] {
+  outline-color: var(--crimson);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hud-select[data-active="true"] .hud-marker {
+    animation: hud-select-flash 200ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+}
+/* Small uppercase section label (e.g. SELECT PROJECT, MISSION LOG). */
+.hud-label {
+  font-family: var(--font-readout);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Scanline sweep — a single crimson line passes over an interactive surface on
+   hover. Purely decorative, motion-gated. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hud-scan {
+    from {
+      transform: translateY(-120%);
+    }
+    to {
+      transform: translateY(120%);
+    }
+  }
+}
+
+/*
+  ── HUD shell layout ─────────────────────────────────────────────────────────
+  A full-bleed menu, not a windowed client: a top identity bar, a horizontal
+  TAB BAR with a magenta→crimson gradient along its top edge, a scrolling
+  content stage, and a bottom button-prompt strip. Mobile-first — a normal
+  scrolling column with sticky top chrome and a sticky bottom strip; at lg+ the
+  stage becomes a fixed-viewport scroll region so the chrome never moves.
+*/
+.hud-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+/* Top chrome: identity bar + tab bar, stuck to the top of the viewport. */
+.hud-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--background) 66%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hud-line);
+}
+/* The horizontal tab strip. Scrolls sideways on narrow screens; the accent
+   gradient runs along its top edge. */
+.hud-tabbar {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid var(--hud-line-steel);
+}
+.hud-tabbar::-webkit-scrollbar {
+  display: none;
+}
+.hud-tabbar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  pointer-events: none;
+}
+.hud-tablist {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-inline: auto;
+  min-width: max-content;
+}
+.hud-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* Bottom button-prompt strip: keycap hints + live clock/location + progress. */
+.hud-prompt {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--background) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--hud-line);
+}
+
+@media (min-width: 1024px) {
+  .hud-shell {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .hud-content {
+    overflow-y: auto;
+  }
+  .hud-header,
+  .hud-prompt {
+    backdrop-filter: none;
+    background: color-mix(in srgb, var(--background) 82%, transparent);
+  }
+}
+
+/* No physical keyboard → the keycap hints would be lying, so hide them (the
+   clock, location and progress readouts stay). */
+@media (hover: none) and (pointer: coarse) {
+  .hud-keycaps {
+    display: none;
+  }
+}
+
+/* Bracketed keycap prompt: a generic keyboard hint, never a platform glyph. */
+.hud-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  padding: 0.05rem 0.3rem;
+  border: 1px solid var(--hud-line-steel);
+  border-radius: 3px;
+  font-family: var(--font-readout);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: var(--steel);
+  background: color-mix(in srgb, var(--steel) 8%, transparent);
+}
+
+/*
+  Diagonal wipe between tabs (View Transitions API): the incoming panel sweeps
+  in over the outgoing one along a diagonal leading edge, snappy (~260ms). The
+  theme toggle overrides this with its own clip-path circle (html.theme-vt).
+*/
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hud-wipe-in {
+    from {
+      clip-path: polygon(0 0, 0 0, 0 0, 0 100%);
+      opacity: 0.55;
+    }
+    to {
+      clip-path: polygon(0 0, 150% 0, 50% 100%, 0 100%);
+      opacity: 1;
+    }
+  }
+  ::view-transition-new(root) {
+    animation: hud-wipe-in 260ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+    z-index: 1;
+  }
+  ::view-transition-old(root) {
+    animation: none;
+    z-index: 0;
+  }
+}
+
+/* Theme toggle: suppress the wipe so only the JS-driven clip-path circle
    animates -- the new theme wipes in over the old from the button's position. */
 html.theme-vt::view-transition-old(root),
 html.theme-vt::view-transition-new(root) {
