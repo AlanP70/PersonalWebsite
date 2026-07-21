@@ -14,7 +14,7 @@ const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "Portrait.jpg"
 // Easy to edit: the status line and the intro sentence.
 const status = "Currently interning at Vibraint AI";
 const intro =
-  "I build for the real-time and the tedious alike: live data-visualization systems, computer-vision tooling, and the automation that quietly does the boring work.";
+  "CS student at Guelph. Recently I've been building live desktop data tools, training computer vision models, and writing Python automation for repetitive business work.";
 
 const interests = ["Piano", "Tennis", "Basketball", "Chess", "Photography"];
 const languages = ["EN", "FR", "RU"];
@@ -118,8 +118,7 @@ export function About() {
 
       <div className="space-y-4 text-foreground/90">
         <p>
-          CS student at the University of Guelph &middot; graduating April 2030.
-          Based in the Greater Toronto Area.
+          Graduating April 2030. Based in the Greater Toronto Area.
         </p>
         <p className="text-muted-foreground">
           Outside of code, I split my time between the piano, the tennis and

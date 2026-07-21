@@ -38,7 +38,7 @@ export const experience: ExperienceEntry[] = [
     type: "Internship",
     dates: "March 2026 - April 2026",
     description:
-      "Trained a YOLO model in Python to track court occupancy at tennis and pickleball courts, then built a pipeline converting live counts into wait-time estimates. [add metric — accuracy / dataset size not on resume]",
+      "Trained a YOLO model in Python to track court occupancy at tennis and pickleball courts, then built a pipeline converting live counts into wait-time estimates.",
     tags: ["Computer Vision", "Python", "YOLO"],
     logo: "logos/linechecks.svg",
   }
