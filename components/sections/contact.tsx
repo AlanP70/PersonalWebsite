@@ -32,10 +32,9 @@ const channels = [
 export function Contact() {
   return (
     <section aria-label="Contact" className="section-container py-14 sm:py-16">
-      <SectionHeading>Contact</SectionHeading>
-      <p className="-mt-4 mb-8 max-w-xl text-muted-foreground">
-        Open to internship opportunities — reach out anytime.
-      </p>
+      <SectionHeading sub="Open to internship opportunities — reach out anytime.">
+        Contact
+      </SectionHeading>
       <ul className="flex flex-col gap-3 text-sm">
         {channels.map((channel) => {
           const Icon = channel.icon;

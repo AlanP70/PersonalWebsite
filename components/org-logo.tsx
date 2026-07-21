@@ -10,7 +10,7 @@ export function OrgLogo({ src, name }: { src?: string; name: string }) {
   return (
     <span
       aria-hidden="true"
-      className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-foreground/[0.03]"
+      className="org-chip flex size-10 shrink-0 items-center justify-center overflow-hidden"
     >
       {show ? (
         // eslint-disable-next-line @next/next/no-img-element -- small logo; the monochrome silhouette filter matters more than optimization, and a plain <img> avoids next/image's dangerouslyAllowSVG config.

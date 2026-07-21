@@ -23,7 +23,7 @@ export function ThemeToggle() {
       onClick={onClick}
       data-theme-toggle
       aria-label="Toggle light and dark theme"
-      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="inline-flex size-9 shrink-0 items-center justify-center rounded-sm border border-steel/40 text-muted-foreground transition-colors hover:border-crimson/50 hover:text-crimson focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {/* Both icons render; CSS shows the right one for the active theme so
           there is no hydration mismatch and no flash. */}

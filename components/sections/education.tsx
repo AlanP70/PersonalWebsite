@@ -1,61 +1,36 @@
 import { education } from "@/lib/data/education";
-import { OrgLogo } from "@/components/org-logo";
 import { SectionHeading } from "@/components/section-heading";
-import { TechPills, StatusBadges } from "@/components/pills";
+import { TechPills } from "@/components/pills";
+import { RecordList, RecordRow } from "@/components/record-row";
 
 export function Education() {
   return (
     <section aria-label="Education" className="section-container py-14 sm:py-16">
       <SectionHeading>Education</SectionHeading>
-      <ul className="divide-y divide-border">
-        {education.map((entry) => {
+      <RecordList>
+        {education.map((entry, i) => {
           const inProgress = /expected/i.test(entry.dates);
           return (
-            <li
+            <RecordRow
               key={`${entry.school}-${entry.credential}`}
-              className="flex gap-4 py-5 first:pt-0"
+              index={i + 1}
+              logo={entry.logo}
+              org={entry.school}
+              href={entry.href}
+              title={entry.credential}
+              dates={entry.dates}
+              badges={inProgress ? ["In progress"] : undefined}
             >
-              <OrgLogo src={entry.logo} name={entry.school} />
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <p className="font-heading font-semibold text-foreground">
-                    {entry.credential}{" "}
-                    <span className="font-normal text-muted-foreground">
-                      &middot;{" "}
-                      {entry.href ? (
-                        <a
-                          href={entry.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
-                        >
-                          {entry.school}
-                        </a>
-                      ) : (
-                        entry.school
-                      )}
-                    </span>
-                  </p>
-                  <p className="shrink-0 font-mono text-xs text-muted-foreground">
-                    {entry.dates}
-                  </p>
-                </div>
-                {inProgress && (
-                  <StatusBadges items={["In progress"]} className="mt-2" />
-                )}
-                {entry.courses.length > 0 && (
-                  <>
-                    <p className="mt-2 text-sm text-foreground/80">
-                      Relevant coursework
-                    </p>
-                    <TechPills items={entry.courses} className="mt-2" />
-                  </>
-                )}
-              </div>
-            </li>
+              {entry.courses.length > 0 && (
+                <>
+                  <p className="hud-label mt-3">Relevant coursework</p>
+                  <TechPills items={entry.courses} className="mt-2" />
+                </>
+              )}
+            </RecordRow>
           );
         })}
-      </ul>
+      </RecordList>
     </section>
   );
 }

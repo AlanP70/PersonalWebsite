@@ -14,7 +14,7 @@ export const projects: Project[] = [
   {
     title: "Ad-Spend Invoice Automation",
     description:
-      "Python pipeline that pulls Meta Marketing API and TikTok ad-spend data, parses billing PDFs/Excel, and auto-generates monthly invoices — scheduled via Windows Task Scheduler for an accounting client. [add metric — hours saved / month]",
+      "Replaced a recurring manual billing task for an accounting client: a Python pipeline pulls ad-spend from the Meta Marketing and TikTok APIs, parses the billing PDFs/Excel exports, and auto-generates the monthly invoices, scheduled unattended via Windows Task Scheduler.",
     tags: ["Python", "Meta Marketing API", "TikTok API", "Automation"],
     badges: ["Client project"],
   },
@@ -31,14 +31,14 @@ export const projects: Project[] = [
   {
     title: "Real-Time Data Visualization",
     description:
-      "Work at VIBRAINT AI: live, continuously updating graph rendering in JavaFX for high-frequency data in a performance-sensitive desktop UI.",
-    tags: ["JavaFX", "Java", "Real-Time Data"],
+      "High-frequency data streams were overwhelming VIBRAINT AI's legacy JavaFX charts, stuttering the desktop UI under load. I rebuilt the live charting path so continuously updating graphs render smoothly while the interface stays responsive at high update rates.",
+    tags: ["JavaFX", "Java", "Real-Time Data", "Performance"],
     badges: ["Internship project"],
   },
   {
     title: "LineChecks — Court Occupancy Detection",
     description:
-      "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled the image dataset and a pipeline converting live counts into wait-time estimates. [add metric — not on resume]",
+      "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled the image dataset and a pipeline converting live detection counts into wait-time estimates.",
     tags: ["YOLO", "Python", "Computer Vision"],
     link: { label: "live site", href: "https://linechecks.com/" },
     featured: true,
@@ -57,7 +57,7 @@ export const projects: Project[] = [
   {
     title: "This Website",
     description:
-      "This site — Next.js App Router, Tailwind CSS, and shadcn/ui, with standout visual components sourced from 21st.dev.",
+      "This site, built as a game-style operator HUD: a Next.js App Router app where sections are tabs that swap via the View Transitions API, over a shared HUD component system (chamfered panels, targeting-rail tabs, catalog readouts). Covers render as no-JS server components, and every animation is gated on reduced-motion.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
     link: { label: "view repo", href: "https://github.com/AlanP70/PersonalWebsite" },
     badges: ["Open source"],

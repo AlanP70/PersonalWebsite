@@ -5,6 +5,8 @@ import { Greeting } from "@/components/sections/greeting";
 import { SectionDivider } from "@/components/section-divider";
 import { TechPills } from "@/components/pills";
 import { ProjectCover } from "@/components/project-cover";
+import { HudImageFrame } from "@/components/hud/image-frame";
+import { HudLink } from "@/components/hud/link";
 import { links } from "@/lib/data/links";
 import { projects } from "@/lib/data/projects";
 import { skillGroups, certifications } from "@/lib/data/skills";
@@ -26,52 +28,84 @@ const socials = [
   { label: "Email", href: `mailto:${links.email}` },
 ];
 
-// Reusable monospace sub-label for the About body (skills, languages, …).
-const metaLabel =
-  "font-mono text-xs tracking-wider text-muted-foreground uppercase";
-
 export function About() {
   return (
     <section
       aria-label="About"
       className="section-container py-14 sm:py-16"
     >
-      {/* Hero lives in the same reading column as the body, so the prompt,
-          name, intro, divider and body text all share one left edge. Text and
-          a modest portrait sit side by side as a cohesive unit. */}
+      {/* Operator profile hero: an identity readout, mission brief, and a spec
+          block sit beside a chamfered ID portrait — the same HUD register as the
+          rest of the site, framed as an operator dossier. */}
       <div className="hero-reveal grid grid-cols-1 gap-8 sm:grid-cols-[1fr_11rem] sm:items-center sm:gap-10">
-        {/* Text column: prompt -> greeting -> name -> intro -> status -> socials. */}
+        {/* Identity column: kicker -> greeting -> name -> designation -> brief ->
+            spec readouts -> comms. */}
         <div className="flex flex-col">
-          <p className="hero-reveal__item font-mono text-xs tracking-wider text-muted-foreground">
-            <span className="text-muted-foreground/60">$</span> whoami
+          {/* Kicker — replaces the old `$ whoami` shell prompt. */}
+          <p className="hero-reveal__item flex items-center gap-2.5">
+            <span aria-hidden="true" className="hud-marker" />
+            <span className="hud-label">Operator Profile</span>
           </p>
-          <div className="hero-reveal__item mt-5">
+          <div className="hero-reveal__item mt-4">
             <Greeting />
           </div>
           <h1
             title="↑ ↑ ↓ ↓ ← → ← → B A"
-            className="hero-reveal__item mt-2 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
+            className="hero-reveal__item mt-1 font-heading text-4xl font-bold tracking-tight text-foreground uppercase sm:text-5xl"
           >
             Alan Pipko
           </h1>
-          <p className="hero-reveal__item mt-4 max-w-md text-base text-foreground/85 sm:text-lg">
-            {intro}
-            <span aria-hidden="true" className="term-cursor" />
-          </p>
-          <p className="hero-reveal__item mt-5 flex items-center gap-2.5 font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">
-            <span aria-hidden="true" className="relative flex size-2 shrink-0">
-              <span className="absolute inline-flex size-full rounded-full bg-accent-amber/30" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent-amber" />
+          {/* Designation readout. */}
+          <p className="hero-reveal__item mt-3 font-mono text-xs tracking-wider text-muted-foreground uppercase">
+            Software Developer
+            <span aria-hidden="true" className="mx-2 text-steel/50">
+              {"//"}
             </span>
-            {status}
+            CS @ University of Guelph
           </p>
+          {/* Mission brief. */}
+          <p className="hero-reveal__item mt-5 max-w-md text-base text-foreground/85 sm:text-lg">
+            {intro}
+          </p>
+          {/* Operator spec readouts — label/value pairs in the HUD register. */}
+          <dl className="hero-reveal__item mt-6 flex flex-col gap-2.5">
+            <div className="flex items-baseline gap-3">
+              <dt className="hud-label w-20 shrink-0">Status</dt>
+              <dd className="flex items-center gap-2.5 text-sm text-foreground/90">
+                <span
+                  aria-hidden="true"
+                  className="relative flex size-2 shrink-0 translate-y-px"
+                >
+                  <span className="absolute inline-flex size-full rounded-full bg-accent-amber/30" />
+                  <span className="relative inline-flex size-2 rounded-full bg-accent-amber" />
+                </span>
+                {status}
+              </dd>
+            </div>
+            <div className="flex items-baseline gap-3">
+              <dt className="hud-label w-20 shrink-0">Location</dt>
+              <dd className="text-sm text-foreground/90">Toronto, ON</dd>
+            </div>
+            <div className="flex items-baseline gap-3">
+              <dt className="hud-label w-20 shrink-0">Focus</dt>
+              <dd className="text-sm text-foreground/90">
+                Real-time UI · Computer Vision · Automation
+              </dd>
+            </div>
+          </dl>
+          {/* Comms channels. */}
           <nav
             aria-label="Social links"
-            className="hero-reveal__item mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground"
+            className="hero-reveal__item mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-muted-foreground"
           >
+            <span className="hud-label mr-1">Comms</span>
             {socials.map((social, i) => (
-              <span key={social.label} className="inline-flex items-center gap-2">
-                {i > 0 && <span aria-hidden="true">/</span>}
+              <span key={social.label} className="inline-flex items-center gap-2.5">
+                {i > 0 && (
+                  <span aria-hidden="true" className="text-steel/40">
+                    /
+                  </span>
+                )}
                 <a
                   href={social.href}
                   {...(social.external
@@ -87,10 +121,11 @@ export function About() {
           </nav>
         </div>
 
-        {/* A modest portrait that balances the text. Drop public/Portrait.jpg to
-            fill it; until then an intentional monochrome placeholder holds the frame. */}
+        {/* Operator ID portrait — a chamfered HUD frame matching the project
+            covers. Drop public/Portrait.jpg to fill it; until then an intentional
+            monochrome placeholder holds the frame. */}
         <div className="hero-reveal__item">
-          <div className="about-portrait relative aspect-[4/5] w-36 overflow-hidden rounded-xl border border-foreground/15 bg-gradient-to-br from-foreground/[0.09] via-foreground/[0.035] to-transparent sm:w-full">
+          <div className="about-portrait hud-panel relative aspect-[4/5] w-36 overflow-hidden sm:w-full">
             {hasPhoto ? (
               <Image
                 src="/Portrait.jpg"
@@ -101,7 +136,7 @@ export function About() {
                 priority
               />
             ) : (
-              <div className="about-portrait__ph flex h-full w-full items-center justify-center">
+              <div className="about-portrait__ph flex h-full w-full items-center justify-center bg-gradient-to-br from-foreground/[0.06] to-transparent">
                 <span
                   aria-hidden="true"
                   className="font-heading text-4xl font-bold tracking-tighter text-foreground/20 select-none"
@@ -111,6 +146,7 @@ export function About() {
               </div>
             )}
           </div>
+          <p className="hud-label mt-2 text-center sm:text-left">Operator ID</p>
         </div>
       </div>
 
@@ -131,28 +167,28 @@ export function About() {
           deep-links on the #projects hash). */}
       <div className="mt-10">
         <div className="mb-3 flex items-baseline justify-between gap-4">
-          <p className={metaLabel}>Featured work</p>
-          <a
-            href="#projects"
-            className="font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
-          >
-            all {projects.length} projects →
-          </a>
+          <p className="hud-label">Featured work</p>
+          <HudLink href="#projects">all {projects.length} projects</HudLink>
         </div>
         <ul className="grid grid-cols-3 gap-3">
           {projects
             .filter((project) => project.image)
             .slice(0, 3)
-            .map((project) => (
+            .map((project, i) => (
               <li key={project.title}>
                 <a
                   href="#projects"
                   aria-label={`${project.title} — see in Projects`}
-                  className="group block focus-visible:outline-none"
+                  className="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <span className="relative block aspect-[16/10] overflow-hidden rounded-lg border border-border bg-panel/50 group-focus-visible:ring-2 group-focus-visible:ring-ring">
+                  <HudImageFrame
+                    id={i + 1}
+                    interactive
+                    bevel="8px"
+                    className="aspect-[16/10] w-full"
+                  >
                     <ProjectCover title={project.title} image={project.image} />
-                  </span>
+                  </HudImageFrame>
                   <span className="mt-1.5 block truncate font-mono text-[0.7rem] text-muted-foreground transition-colors group-hover:text-foreground">
                     {project.title}
                   </span>
@@ -168,7 +204,7 @@ export function About() {
             key={group.category}
             className="flex flex-col gap-2 sm:flex-row sm:gap-6"
           >
-            <p className={`w-28 shrink-0 pt-0.5 ${metaLabel}`}>
+            <p className="hud-label w-28 shrink-0 pt-0.5">
               {group.category}
             </p>
             <TechPills items={group.items} />
@@ -178,11 +214,11 @@ export function About() {
 
       <div className="mt-10 grid gap-8 sm:grid-cols-2">
         <div>
-          <p className={`mb-2 ${metaLabel}`}>Languages</p>
+          <p className="hud-label mb-2">Languages</p>
           <TechPills items={languages} />
         </div>
         <div>
-          <p className={`mb-2 ${metaLabel}`}>Interests</p>
+          <p className="hud-label mb-2">Interests</p>
           <TechPills items={interests} />
         </div>
       </div>
@@ -190,9 +226,13 @@ export function About() {
       <SectionDivider />
 
       <div>
-        <h2 className="mb-4 font-heading text-lg font-semibold">
-          Certifications
-        </h2>
+        {/* Marker + label, matching the hero "Operator Profile" kicker and the
+            other About sub-section labels — so this stops reading as a lone
+            generic heading. Stays an <h2> for document structure. */}
+        <div className="mb-4 flex items-center gap-2.5">
+          <span aria-hidden="true" className="hud-marker" />
+          <h2 className="hud-label">Certifications</h2>
+        </div>
         <ul className="space-y-2">
           {certifications.map((cert) => (
             <li key={cert.name} className="text-sm text-muted-foreground">

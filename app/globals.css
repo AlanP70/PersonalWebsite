@@ -716,6 +716,97 @@
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
+/* Trailing rail for a section header: a steel hairline that fills the row and
+   fades toward the panel edge. Pairs with a diamond marker + the title. */
+.hud-heading-rule {
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 1.5rem;
+  background: linear-gradient(to right, var(--hud-line-steel), transparent);
+}
+
+/*
+  Small angular state chip (StatusBadges): a chamfered mono tag with a steel
+  hairline (same clip + mask family as `.hud-panel` / `.org-chip` / the image
+  frame), replacing the rounded pill so status labels — "Live", "Internship",
+  "In progress" — read in the same catalog register as the rest of the HUD.
+*/
+.hud-badge {
+  --bevel: 4px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.12rem 0.45rem;
+  font-family: var(--font-readout);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--foreground) 82%, transparent);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
+}
+.hud-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: var(--hud-line-steel);
+  clip-path: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/*
+  ── Operator records (Experience / Education) ────────────────────────────────
+  Steel hairlines chain the shared RecordRow entries into one continuous log, so
+  both tabs read as record types in the same file system. `.org-chip` frames the
+  org logo in a chamfered steel ID chip echoing the operator-ID portrait.
+*/
+.record-row + .record-row {
+  border-top: 1px solid var(--hud-line-steel);
+}
+.org-chip {
+  --bevel: 6px;
+  position: relative;
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
+}
+/* Hairline steel ring tracing the chip's clipped shape (same mask trick as
+   `.hud-panel`). */
+.org-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: var(--hud-line-steel);
+  clip-path: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
 
 /* Scanline sweep — a single crimson line passes over an interactive surface on
    hover. Purely decorative, motion-gated. */
@@ -728,6 +819,225 @@
       transform: translateY(120%);
     }
   }
+}
+
+/*
+  ── Project mission-file cards ───────────────────────────────────────────────
+  The gallery cards, dressed as holographic case files. The panel chassis
+  (`.hud-panel--interactive`) already supplies the glass, chamfer, hairline
+  border and restrained crimson hover glow; these rules add the overlays: a
+  system-label band with a live-status readout floating over the cover, and a
+  single scan-line that sweeps the screenshot once on hover. Every overlay is
+  aria-hidden decoration and pointer-events-none, so layout and clicks are
+  untouched.
+*/
+.project-cover {
+  position: relative;
+}
+/* System-label band: file index (left) + status readout (right), on a short
+   top scrim so it stays legible over bright screenshots. */
+.project-band {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.55rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--background) 66%, transparent),
+    transparent
+  );
+}
+.project-band__id {
+  font-family: var(--font-readout);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--steel) 82%, var(--foreground));
+  text-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+}
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  font-family: var(--font-readout);
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--foreground) 82%, transparent);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+}
+.project-status__dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 9999px;
+  background: var(--steel);
+  box-shadow: 0 0 5px var(--steel);
+}
+.project-status--idle {
+  color: color-mix(in srgb, var(--foreground) 55%, transparent);
+}
+.project-status--idle .project-status__dot {
+  background: color-mix(in srgb, var(--steel) 55%, transparent);
+  box-shadow: none;
+}
+.project-status--live .project-status__dot {
+  background: var(--crimson);
+  box-shadow: 0 0 6px var(--crimson);
+}
+/* Scan-line reveal: a soft steel band passes once down the cover on hover. */
+.project-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.project-scan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 42%;
+  transform: translateY(-120%);
+  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--steel) 24%, transparent),
+    transparent
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .group:hover .project-scan::before {
+    animation: project-scan 900ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+  @keyframes project-scan {
+    0% {
+      transform: translateY(-120%);
+      opacity: 0;
+    }
+    16% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(320%);
+      opacity: 0;
+    }
+  }
+  .project-status--live .project-status__dot {
+    animation: project-pulse 2s ease-in-out infinite;
+  }
+  @keyframes project-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
+
+/*
+  ── HUD image frame ──────────────────────────────────────────────────────────
+  The shared chassis behind every framed image (About featured covers,
+  Photography tiles): a chamfered box whose corners match `.hud-panel` /
+  `.org-chip`, a steel hairline border tracing the clip (same mask trick), a
+  catalog IMG NN label, and an optional title/location/date readout that reveals
+  over a bottom scrim on hover/focus. Steel by default (archive register);
+  interactive frames sharpen to crimson and lift a tight glow when their `group`
+  ancestor is engaged. No rounded corners. See components/hud/image-frame.tsx.
+*/
+.hud-image-frame {
+  --bevel: 10px;
+  --hud-border: var(--hud-line-steel);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
+}
+/* Hairline border ring tracing the clipped shape — a 1px inset fill masked to
+   show only its padding edge. Sits above the image + overlays so it frames
+   everything cleanly. */
+.hud-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  background: var(--hud-border);
+  clip-path: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.hud-image-frame--interactive {
+  transition: filter 200ms cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+/* Group-driven engagement: crimson edge on hover, plus a tight glow hugging the
+   chamfer. `:focus-within` covers both a focused frame-as-group (About link)
+   and a focused control inside the group (Photography button). */
+.group:hover .hud-image-frame--interactive {
+  --hud-border: var(--crimson);
+  filter: drop-shadow(0 0 5px var(--crimson-dim));
+}
+.group:focus-within .hud-image-frame--interactive {
+  --hud-border: var(--crimson);
+}
+
+/* Catalog label band: IMG NN (left) + a small steel reticle tick (right), on a
+   short top scrim so it stays legible over bright images. */
+.hud-image-band {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--background) 60%, transparent),
+    transparent
+  );
+}
+.hud-image-band__id {
+  font-family: var(--font-readout);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--steel) 82%, var(--foreground));
+  text-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+}
+/* Small hollow steel diamond echoing `.hud-marker`. */
+.hud-image-tick {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border: 1px solid var(--steel);
+  transform: rotate(45deg);
+  opacity: 0.75;
 }
 
 /*

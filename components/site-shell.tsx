@@ -254,7 +254,7 @@ export function SiteShell({
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
                     {...(download ? { download: true } : {})}
-                    className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="inline-flex size-8 items-center justify-center text-muted-foreground transition-colors hover:text-crimson focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <Icon className="size-4" />
                   </a>
@@ -313,7 +313,7 @@ export function SiteShell({
                     {typeof tab.count === "number" && (
                       <span
                         className={cn(
-                          "inline-flex h-4 min-w-4 items-center justify-center rounded-full border px-1 font-mono text-[0.55rem] leading-none transition-colors",
+                          "inline-flex h-4 min-w-4 items-center justify-center rounded-sm border px-1 font-mono text-[0.55rem] leading-none transition-colors",
                           selected
                             ? "border-steel/70 text-steel"
                             : "border-steel/40 text-steel/70",
