@@ -3,22 +3,20 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 
 /*
-  Cursor-reactive geometric web-lattice background. A single fixed, full-viewport
-  canvas that replaces the static CSS mesh (`.site-texture`) while it's active —
-  an irregular net of thin strands over the near-black base. Strands rest at a
-  faint cool steel; within INFLUENCE px of the cursor they brighten and warm
-  toward crimson, falling off smoothly with distance. The geometry (node jitter +
-  short-range links) is built once per resize.
+  Cursor-reactive hexagonal HUD lattice — a nod to Insomniac's Spider-Man
+  interface. A single fixed, full-viewport canvas that replaces the static CSS
+  honeycomb (`.site-texture`) while it's active: a crisp honeycomb of thin
+  strands over the near-black base. Strands rest at a faint cool steel; within
+  INFLUENCE px of the cursor they brighten and warm toward crimson, falling off
+  smoothly with distance. The honeycomb geometry is built once per resize.
 
   Gated on `(pointer: fine)` + `prefers-reduced-motion: no-preference`. On touch
-  or reduced-motion this renders nothing and the CSS `.site-texture` mesh stays.
-  The film grain (`.site-texture::before`) always stays on top.
+  or reduced-motion this renders nothing and the CSS `.site-texture` honeycomb
+  stays. The film grain (`.site-texture::before`) always stays on top.
 */
 
-const SPACING = 88; // nominal node pitch (px)
-const JITTER = 0.42; // fraction of SPACING each node is randomly nudged
-const LINK_DIST = SPACING * 1.55; // max length of a strand between two nodes
-const NODE_RADIUS = 1.1;
+const HEX_RADIUS = 46; // circumradius of each flat-top honeycomb cell (px)
+const NODE_RADIUS = 0.9;
 const INFLUENCE = 210; // cursor influence radius (px)
 
 // Per-theme colours: resting cool cyan, cursor-warmed toward the magenta→crimson
@@ -104,44 +102,59 @@ function LatticeCanvas() {
     const theme = () =>
       root.classList.contains("dark") ? THEME.dark : THEME.light;
 
-    // Build a jittered node field, then link nodes that fall within LINK_DIST of
-    // each other (scanning only the neighbouring columns/rows keeps it cheap).
+    // Build a crisp flat-top honeycomb: step across a grid of hex centres and
+    // emit each cell's six corners + edges. Shared vertices/edges are deduped by
+    // their rounded coordinates so neighbouring cells reuse the same strands
+    // (keeping the edge count near one net rather than six-per-cell).
     const buildLattice = () => {
       nodes = [];
-      const grid: Node[][] = [];
-      const cols = Math.ceil(width / SPACING) + 2;
-      const rows = Math.ceil(height / SPACING) + 2;
-      for (let c = 0; c < cols; c++) {
-        grid[c] = [];
-        for (let r = 0; r < rows; r++) {
-          const node: Node = {
-            x: (c - 1) * SPACING + (Math.random() - 0.5) * 2 * JITTER * SPACING,
-            y: (r - 1) * SPACING + (Math.random() - 0.5) * 2 * JITTER * SPACING,
-          };
-          grid[c][r] = node;
-          nodes.push(node);
-        }
-      }
       edges = [];
-      const maxSq = LINK_DIST * LINK_DIST;
-      for (let c = 0; c < cols; c++) {
-        for (let r = 0; r < rows; r++) {
-          const a = grid[c][r];
-          // Only look right / down / down-right / down-left to avoid duplicates.
-          const candidates = [
-            grid[c + 1]?.[r],
-            grid[c]?.[r + 1],
-            grid[c + 1]?.[r + 1],
-            grid[c - 1]?.[r + 1],
-          ];
-          for (const b of candidates) {
-            if (!b) continue;
-            const dx = a.x - b.x;
-            const dy = a.y - b.y;
-            if (dx * dx + dy * dy <= maxSq) {
-              edges.push({ a, b, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 });
-            }
+      const nodeMap = new Map<string, Node>();
+      const edgeSet = new Set<string>();
+      const colStep = HEX_RADIUS * 1.5;
+      const rowStep = HEX_RADIUS * Math.sqrt(3);
+      const cols = Math.ceil(width / colStep) + 2;
+      const rows = Math.ceil(height / rowStep) + 2;
+
+      const keyOf = (x: number, y: number) =>
+        `${Math.round(x)},${Math.round(y)}`;
+      const nodeAt = (x: number, y: number) => {
+        const k = keyOf(x, y);
+        let n = nodeMap.get(k);
+        if (!n) {
+          n = { x, y };
+          nodeMap.set(k, n);
+          nodes.push(n);
+        }
+        return n;
+      };
+      const linkNodes = (a: Node, b: Node) => {
+        const ka = keyOf(a.x, a.y);
+        const kb = keyOf(b.x, b.y);
+        const ek = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+        if (edgeSet.has(ek)) return;
+        edgeSet.add(ek);
+        edges.push({ a, b, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 });
+      };
+
+      // Odd columns drop half a row so the flat-top cells interlock.
+      for (let c = -1; c < cols; c++) {
+        for (let r = -1; r < rows; r++) {
+          const cx = c * colStep;
+          const cy = r * rowStep + (c & 1 ? rowStep / 2 : 0);
+          let prev: Node | null = null;
+          let first: Node | null = null;
+          for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            const corner = nodeAt(
+              cx + HEX_RADIUS * Math.cos(angle),
+              cy + HEX_RADIUS * Math.sin(angle),
+            );
+            if (i === 0) first = corner;
+            if (prev) linkNodes(prev, corner);
+            prev = corner;
           }
+          if (prev && first) linkNodes(prev, first);
         }
       }
     };

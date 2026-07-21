@@ -346,10 +346,11 @@
   One of the site owner's own photos fills the viewport behind everything,
   heavily darkened + desaturated toward the navy base. A vignette + gradient
   scrim over it (`.site-scrim`) guarantees text contrast. The cursor-reactive
-  web-lattice (or its static-mesh fallback) then layers over the photo at low
-  opacity — mesh over image, never the sole background. Film grain paints last.
-  Layer order (all fixed, pointer-events:none, behind content):
-    -13 photo · -12 scrim · -11 lattice canvas · -10 static mesh + grain
+  web-lattice (or its static honeycomb fallback) then layers over the photo at
+  low opacity — mesh over image, never the sole background. A holographic
+  overlay (scanlines + corner brackets + scan sweep) sits above it, then film
+  grain paints last. Layer order (all fixed, pointer-events:none, behind content):
+    -13 photo · -12 scrim · -11 lattice canvas · -10 static honeycomb + grain · -9 holographic overlay
 */
 .site-photo {
   position: fixed;
@@ -387,12 +388,13 @@
 }
 
 /*
-  Site-wide background: a static geometric web-lattice fallback (fixed,
-  full-viewport, rendered once in the root layout). On pointer-fine, motion-OK
-  devices the cursor-reactive WebLattice canvas (components/web-lattice.tsx)
-  takes over and this static mesh is dropped. Both stay low-contrast so text
-  over the photo + scrim remains readable. z-index keeps it behind content;
-  pointer-events:none so it never blocks clicks.
+  Site-wide background: a static honeycomb fallback (fixed, full-viewport,
+  rendered once in the root layout). On pointer-fine, motion-OK devices the
+  cursor-reactive WebLattice canvas (components/web-lattice.tsx) takes over and
+  this static honeycomb is dropped. Both stay low-contrast so text over the
+  photo + scrim remains readable. The hex outline is a tileable SVG whose fill
+  is baked per theme (CSS vars can't reach inside a data URI). z-index keeps it
+  behind content; pointer-events:none so it never blocks clicks.
 */
 .site-texture {
   position: fixed;
@@ -400,22 +402,12 @@
   z-index: -10;
   pointer-events: none;
   opacity: 0.45;
-  background-image:
-    radial-gradient(var(--hud-line-steel) 0.5px, transparent 0.7px),
-    repeating-linear-gradient(
-      60deg,
-      var(--hud-line-steel) 0 1px,
-      transparent 1px 48px
-    ),
-    repeating-linear-gradient(
-      -60deg,
-      var(--hud-line-steel) 0 1px,
-      transparent 1px 48px
-    );
-  background-size:
-    7px 7px,
-    auto,
-    auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%230e7490' fill-opacity='0.5' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
+  background-size: 44px 77px;
+}
+/* Dark theme swaps the baked hex fill to the brighter cyan steel. */
+.dark .site-texture {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%2363d3ea' fill-opacity='0.5' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
 }
 /*
   Cursor-reactive web-lattice canvas (components/web-lattice.tsx). Fixed,
@@ -439,6 +431,77 @@
   inset: 0;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+  Holographic HUD overlay (fixed, full-viewport, over the mesh but behind
+  content, never intercepts clicks) — the Insomniac Spider-Man cue on top of the
+  honeycomb. Three hairline, low-opacity elements:
+    · the layer itself — fine horizontal scanlines, reading as a hologram surface
+    · ::before — corner brackets framing the viewport like a readout
+    · ::after  — a soft steel band sweeping top→bottom as a scan pass
+  The sweep is motion-gated: hidden entirely under prefers-reduced-motion so no
+  static band is left parked mid-screen.
+*/
+.site-holo {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--hud-line-steel) 0 1px,
+    transparent 1px 7px
+  );
+}
+.site-holo::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  background:
+    linear-gradient(var(--hud-line), var(--hud-line)) left top / 24px 1px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) left top / 1px 24px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) right top / 24px 1px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) right top / 1px 24px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) left bottom / 24px 1px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) left bottom / 1px 24px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) right bottom / 24px 1px no-repeat,
+    linear-gradient(var(--hud-line), var(--hud-line)) right bottom / 1px 24px no-repeat;
+}
+.site-holo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40vh;
+  transform: translateY(-40vh);
+  opacity: 0.6;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--hud-line-steel),
+    transparent
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .site-holo::after {
+    animation: hud-scan 9s linear infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-holo::after {
+    display: none;
+  }
+}
+@keyframes hud-scan {
+  from {
+    transform: translateY(-40vh);
+  }
+  to {
+    transform: translateY(100vh);
+  }
 }
 
 /* Grain over the placeholder frame so the empty slot reads as an intentional
@@ -718,6 +781,123 @@
   margin-inline: auto;
   min-width: max-content;
 }
+
+/* ── Primary nav tabs: mission-computer readout cells ──────────────────────
+   Each tab is a cell that powers on when hovered (steel) and locks on when
+   active (a crimson targeting rail with corner-bracket ticks + a soft wash).
+   Nearly everything keys off aria-selected / :hover so the JSX stays lean. */
+.hud-tab {
+  position: relative;
+  isolation: isolate;
+}
+/* Cell wash — fades up from the baseline with chamfered top corners. Steel on
+   hover/focus of an idle tab; overridden to crimson while the tab is active. */
+.hud-tab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  clip-path: polygon(
+    0 100%, 0 5px, 5px 0, calc(100% - 5px) 0, 100% 5px, 100% 100%
+  );
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--steel) 16%, transparent),
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+.hud-tab:not([aria-selected="true"]):hover::before,
+.hud-tab:not([aria-selected="true"]):focus-visible::before {
+  opacity: 1;
+}
+/* Hover baseline tick — a short steel bar that scans out from the centre. */
+.hud-tab::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 1.5px;
+  transform: translateX(-50%);
+  background: var(--steel);
+  opacity: 0;
+  transition:
+    width 200ms ease,
+    opacity 200ms ease;
+}
+.hud-tab:not([aria-selected="true"]):hover::after,
+.hud-tab:not([aria-selected="true"]):focus-visible::after {
+  width: calc(100% - 1.5rem);
+  opacity: 0.7;
+}
+/* Active cell wash (crimson). */
+.hud-tab[aria-selected="true"]::before {
+  opacity: 1;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--crimson) 22%, transparent),
+    transparent 70%
+  );
+}
+/* Channel index — the mission-computer readout that ranks each section. */
+.hud-tab-index {
+  color: color-mix(in srgb, var(--steel) 65%, transparent);
+  transition: color 180ms ease;
+}
+.hud-tab[aria-selected="true"] .hud-tab-index {
+  color: var(--crimson);
+}
+/* Active targeting rail — glowing accent gradient with corner-bracket ticks
+   rising at each end (the reticle motif). */
+.hud-tab-marker {
+  pointer-events: none;
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  box-shadow:
+    0 0 8px var(--crimson-dim),
+    0 0 2px var(--crimson);
+}
+.hud-tab-marker::before,
+.hud-tab-marker::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 6px;
+  background: var(--crimson);
+  box-shadow: 0 0 6px var(--crimson-dim);
+}
+.hud-tab-marker::before {
+  left: -1px;
+}
+.hud-tab-marker::after {
+  right: -1px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hud-tab-marker {
+    animation: hud-tab-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes hud-tab-pulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 8px var(--crimson-dim),
+        0 0 2px var(--crimson);
+    }
+    50% {
+      box-shadow:
+        0 0 14px var(--crimson-dim),
+        0 0 4px var(--crimson);
+    }
+  }
+}
+
 .hud-content {
   flex: 1 1 auto;
   min-width: 0;

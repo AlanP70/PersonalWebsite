@@ -81,14 +81,17 @@ export default function RootLayout({
         {/* Full-viewport background stack — fixed, behind all content. A
             darkened/desaturated backdrop photo sits at the bottom, a vignette +
             scrim over it holds text contrast, then the cursor-reactive
-            WebLattice canvas (or its static web-mesh fallback) layers the HUD
-            mesh over the photo. The film grain always paints on top. */}
+            WebLattice canvas (or its static honeycomb fallback) layers the HUD
+            hex mesh over the photo. A holographic overlay (scanlines + corner
+            brackets + a motion-gated scan sweep) sits above it, then the film
+            grain always paints on top. */}
         <div aria-hidden="true" className="site-photo">
           <Image src={BACKDROP_PHOTO} alt="" fill priority sizes="100vw" />
         </div>
         <div aria-hidden="true" className="site-scrim" />
         <WebLattice />
         <div aria-hidden="true" className="site-texture" />
+        <div aria-hidden="true" className="site-holo" />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

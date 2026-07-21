@@ -297,12 +297,18 @@ export function SiteShell({
                     onClick={() => selectTab(tab.id)}
                     onKeyDown={(event) => onKeyDown(event, index)}
                     className={cn(
-                      "group relative flex items-center gap-1.5 px-3 py-2.5 font-heading text-xs font-semibold tracking-wider whitespace-nowrap uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:px-4 sm:text-sm",
+                      "hud-tab group relative flex items-center gap-1.5 px-3 py-2.5 font-heading text-xs font-semibold tracking-wider whitespace-nowrap uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:px-4 sm:text-sm",
                       selected
                         ? "text-foreground"
                         : "text-muted-foreground hover:text-foreground",
                     )}
                   >
+                    <span
+                      aria-hidden="true"
+                      className="hud-tab-index hidden font-mono text-[0.6rem] font-medium tabular-nums sm:inline"
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                     <span>{tab.label}</span>
                     {typeof tab.count === "number" && (
                       <span
@@ -317,11 +323,7 @@ export function SiteShell({
                       </span>
                     )}
                     {selected && (
-                      <span
-                        aria-hidden="true"
-                        style={{ background: "var(--accent-gradient)" }}
-                        className="pointer-events-none absolute inset-x-2 bottom-0 h-0.5"
-                      />
+                      <span aria-hidden="true" className="hud-tab-marker" />
                     )}
                   </button>
                 </div>
