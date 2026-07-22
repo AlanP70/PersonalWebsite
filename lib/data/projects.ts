@@ -12,13 +12,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Ad-Spend Invoice Automation",
-    description:
-      "Replaced a recurring manual billing task for an accounting client: a Python pipeline pulls ad-spend from the Meta Marketing and TikTok APIs, parses the billing PDFs/Excel exports, and auto-generates the monthly invoices, scheduled unattended via Windows Task Scheduler.",
-    tags: ["Python", "Meta Marketing API", "TikTok API", "Automation"],
-    badges: ["Client project"],
-  },
-  {
     title: "Eura",
     description:
       "Contributed to Eura, an AI-powered math-tutoring platform with an interactive whiteboard. Implemented Google OAuth2 (Authorization Code flow with CSRF protection) and a JWT session system with short-lived access and long-lived refresh tokens, plus email/password login with bcrypt hashing.",
@@ -27,13 +20,6 @@ export const projects: Project[] = [
     featured: true,
     badges: ["Live"],
     image: "projects/eura.png",
-  },
-  {
-    title: "Real-Time Data Visualization",
-    description:
-      "High-frequency data streams were overwhelming VIBRAINT AI's legacy JavaFX charts, stuttering the desktop UI under load. I rebuilt the live charting path so continuously updating graphs render smoothly while the interface stays responsive at high update rates.",
-    tags: ["JavaFX", "Java", "Real-Time Data", "Performance"],
-    badges: ["Internship project"],
   },
   {
     title: "LineChecks — Court Occupancy Detection",
@@ -55,9 +41,23 @@ export const projects: Project[] = [
     image: "projects/snipsmart.png",
   },
   {
+    title: "High-Frequency Chart Rendering",
+    description:
+      "VIBRAINT AI's legacy JavaFX charts dropped frames when live streams pushed more updates per second than the UI thread could paint. I rebuilt the charting path to decouple the render loop from the incoming data rate — coalescing bursts of updates into a steady frame budget and keeping the redraw work off the JavaFX Application Thread — so the graphs stay smooth and the interface stays interactive under sustained load.",
+    tags: ["JavaFX", "Java", "Rendering", "Performance"],
+    badges: ["Internship project"],
+  },
+  {
+    title: "Ad-Spend Invoice Automation",
+    description:
+      "Replaced a recurring manual billing task for an accounting client: a Python pipeline pulls ad-spend from the Meta Marketing and TikTok APIs, parses the billing PDFs/Excel exports, and auto-generates the monthly invoices, scheduled unattended via Windows Task Scheduler.",
+    tags: ["Python", "Meta Marketing API", "TikTok API", "Automation"],
+    badges: ["Client project"],
+  },
+  {
     title: "This Website",
     description:
-      "This site, built as a game-style operator HUD: a Next.js App Router app where sections are tabs that swap via the View Transitions API, over a shared HUD component system (chamfered panels, targeting-rail tabs, catalog readouts). Covers render as no-JS server components, and every animation is gated on reduced-motion.",
+      "A game-style operator HUD design system: chamfered panels, targeting-rail tabs, and catalog readouts are built from one shared set of primitives, so every section — projects, experience, photography — reads as a record in the same interface. Sections are tabs that cross-fade through the View Transitions API, covers render as no-JS server components, and all motion is gated on reduced-motion. Built on the Next.js App Router.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
     link: { label: "view repo", href: "https://github.com/AlanP70/PersonalWebsite" },
     badges: ["Open source"],

@@ -8,6 +8,8 @@ import { Mail, FileText } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { FooterHint } from "@/components/easter-egg/footer-hint";
+import { SystemNote } from "@/components/easter-egg/system-note";
+import { NowPlayingWidget } from "@/components/now-playing-widget";
 import { links } from "@/lib/data/links";
 import { toggleTheme } from "@/lib/theme";
 import { withViewTransition } from "@/lib/view-transitions";
@@ -226,7 +228,14 @@ export function SiteShell({
       {/* Top chrome: identity bar + the horizontal tab strip. */}
       <div className="hud-header">
         <header className="hud-topbar">
-          <div className="flex items-center justify-between gap-4 px-4 py-2 sm:px-6">
+          <div className="relative flex items-center justify-between gap-4 px-4 py-2 sm:px-6">
+            {/* Centre-of-bar SYSTEM NOTE readout. Absolutely centred so it
+                overlays the middle without disturbing the identity/controls
+                columns, and hidden below md where the two edges would crowd it
+                (touch visitors get the same nudge from the footer hint). */}
+            <div className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:block">
+              <SystemNote />
+            </div>
             <button
               type="button"
               onClick={() => selectTab(tabs[0].id)}
@@ -425,6 +434,11 @@ export function SiteShell({
           <FooterHint />
         </div>
       </footer>
+
+      {/* Persistent docked audio module — rides across every tab. Fixed to the
+          viewport and mounted here (a top-level shell child, no transformed
+          ancestor) so it isn't clipped by the lg overflow-hidden stage. */}
+      <NowPlayingWidget />
     </div>
   );
 }

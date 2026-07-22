@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Terminal } from "./terminal";
+import { activateProtocol } from "./protocol";
 
 // ↑ ↑ ↓ ↓ ← → ← → B A
 const SEQUENCE = [
@@ -63,6 +64,7 @@ export function KonamiEasterEgg() {
         progressRef.current += 1;
         if (progressRef.current === SEQUENCE.length) {
           progressRef.current = 0;
+          activateProtocol();
           setOpen(true);
         }
       } else {
@@ -77,7 +79,10 @@ export function KonamiEasterEgg() {
 
   // Mobile entry point: the footer hint dispatches this on tap.
   useEffect(() => {
-    const openFromTap = () => setOpen(true);
+    const openFromTap = () => {
+      activateProtocol();
+      setOpen(true);
+    };
     window.addEventListener(OPEN_TERMINAL_EVENT, openFromTap);
     return () => window.removeEventListener(OPEN_TERMINAL_EVENT, openFromTap);
   }, []);

@@ -89,7 +89,7 @@ export function About() {
             <div className="flex items-baseline gap-3">
               <dt className="hud-label w-20 shrink-0">Focus</dt>
               <dd className="text-sm text-foreground/90">
-                Real-time UI · Computer Vision · Automation
+                Cybersecurity · Automation · Live Data Visualization
               </dd>
             </div>
           </dl>
