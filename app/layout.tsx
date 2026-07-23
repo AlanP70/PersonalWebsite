@@ -3,6 +3,7 @@ import { Saira_Condensed, Instrument_Sans, JetBrains_Mono } from "next/font/goog
 import Image from "next/image";
 import { WebLattice } from "@/components/web-lattice";
 import { KonamiEasterEgg } from "@/components/easter-egg/konami";
+import { links } from "@/lib/data/links";
 import "./globals.css";
 
 // Full-bleed backdrop photo (one of the owner's own, from public/places/). To
@@ -35,7 +36,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://alanpipko.dev";
+const siteUrl = "https://alanpipko.me";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -62,6 +63,36 @@ export const viewport: Viewport = {
   themeColor: "#070b16",
 };
 
+// Schema.org Person graph for rich results. Emitted as a JSON-LD <script> in the
+// body below; `sameAs` links the social profiles in lib/data/links.ts.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Alan Pipko",
+  url: siteUrl,
+  jobTitle: "Software Developer",
+  description:
+    "Computer Science student & software developer — real-time systems, ML tooling, and automation.",
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Guelph",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Ontario",
+    addressCountry: "CA",
+  },
+  email: `mailto:${links.email}`,
+  sameAs: [links.github, links.linkedin],
+  knowsAbout: [
+    "Software Development",
+    "Real-Time Systems",
+    "Computer Vision",
+    "Automation",
+    "Cybersecurity",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,6 +104,14 @@ export default function RootLayout({
       className={`dark ${sairaCondensed.variable} ${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Structured data for search engines. The `<`→< escape blocks any
+            markup breakout when the object is serialised into the document. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         {/* Full-viewport background stack — fixed, behind all content. A
             darkened/desaturated backdrop photo sits at the bottom, a vignette +
             scrim over it holds text contrast, then the cursor-reactive
