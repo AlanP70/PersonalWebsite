@@ -1,6 +1,6 @@
-// Thin, typed wrappers around the browser View Transitions API. Both the tab
-// crossfade and the theme circle-reveal go through here so the feature-detect
-// and reduced-motion guard live in one place.
+// Thin, typed wrappers around the browser View Transitions API. The tab
+// crossfade goes through here so the feature-detect and reduced-motion guard
+// live in one place.
 
 export type ViewTransition = {
   ready: Promise<void>;

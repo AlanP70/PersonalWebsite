@@ -65,9 +65,8 @@
 /*
   Action-game menu-HUD palette (Marvel's Spider-Man menu system). A deep
   navy/indigo base, a magenta→crimson gradient reserved for the accent bar/edges,
-  and cool cyan-white text. Dark is the hero; light is a restrained "tactical
-  briefing" variant on cool paper. Both drive the same magenta→crimson accent so
-  the two themes stay one system.
+  and cool cyan-white text. The site is dark-only: a single :root palette drives
+  the whole system.
 
   --crimson        primary accent / large-bold / edges (NOT small body text)
   --crimson-bright hover / active / focus edges
@@ -81,59 +80,6 @@
   Palette lives here; retune a single value to reskin the whole site.
 */
 :root {
-  --background: #eef1f7;
-  --foreground: #101a2e;
-  --panel: #ffffff;
-  --panel-glass: rgb(255 255 255 / 72%);
-  --panel-foreground: #101a2e;
-  --card: #ffffff;
-  --card-foreground: #101a2e;
-  --popover: #ffffff;
-  --popover-foreground: #101a2e;
-  --primary: #c8123f;
-  --primary-foreground: #ffffff;
-  --secondary: #e2e7f1;
-  --secondary-foreground: #101a2e;
-  --muted: #e2e7f1;
-  --muted-foreground: #49597a;
-  --accent: #dde3ef;
-  --accent-foreground: #101a2e;
-  /* Crimson link tone, darkened so crimson-on-paper clears AA for small text. */
-  --accent-amber: #bc0f45;
-  --destructive: #dc2626;
-  --border: rgb(20 40 80 / 14%);
-  --input: rgb(20 40 80 / 16%);
-  --ring: #c8123f;
-  --crimson: #c8123f;
-  --crimson-bright: #a80f36;
-  --crimson-dim: rgb(200 18 63 / 40%);
-  --magenta: #c81d7a;
-  --magenta-bright: #a8155f;
-  --accent-gradient: linear-gradient(90deg, #d81f86 0%, #c8123f 100%);
-  --steel: #0e7490;
-  --steel-dim: rgb(14 116 144 / 40%);
-  --hud-line: rgb(200 18 63 / 30%);
-  --hud-line-steel: rgb(14 116 144 / 24%);
-  /* Light scrim lightens the photo toward paper so dark ink stays readable. */
-  --scrim-tint: color-mix(in srgb, var(--background) 60%, transparent);
-  --scrim-edge: rgb(20 30 60 / 22%);
-  --chart-1: #c8123f;
-  --chart-2: #0e7490;
-  --chart-3: #c81d7a;
-  --chart-4: #3f6f86;
-  --chart-5: #49597a;
-  --radius: 0.75rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #101a2e;
-  --sidebar-primary: #c8123f;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dde3ef;
-  --sidebar-accent-foreground: #101a2e;
-  --sidebar-border: rgb(20 40 80 / 14%);
-  --sidebar-ring: #c8123f;
-}
-
-.dark {
   --background: #070b16;
   --foreground: #e7effb;
   --panel: #0e1630;
@@ -178,6 +124,7 @@
   --chart-3: #ff2f9e;
   --chart-4: #5c7b91;
   --chart-5: #93a4c4;
+  --radius: 0.75rem;
   --sidebar: #0e1630;
   --sidebar-foreground: #e7effb;
   --sidebar-primary: #e8244b;
@@ -362,9 +309,6 @@
   object-fit: cover;
   /* Desaturate + darken so the photo reads as a tinted navy field, not a busy
      picture competing with the HUD. */
-  filter: saturate(0.4) brightness(0.5) contrast(1.05);
-}
-.dark .site-photo img {
   filter: saturate(0.32) brightness(0.34) contrast(1.08);
 }
 .site-scrim {
@@ -392,9 +336,9 @@
   rendered once in the root layout). On pointer-fine, motion-OK devices the
   cursor-reactive WebLattice canvas (components/web-lattice.tsx) takes over and
   this static honeycomb is dropped. Both stay low-contrast so text over the
-  photo + scrim remains readable. The hex outline is a tileable SVG whose fill
-  is baked per theme (CSS vars can't reach inside a data URI). z-index keeps it
-  behind content; pointer-events:none so it never blocks clicks.
+  photo + scrim remains readable. The hex outline is a tileable SVG whose cyan
+  steel fill is baked in (CSS vars can't reach inside a data URI). z-index keeps
+  it behind content; pointer-events:none so it never blocks clicks.
 */
 .site-texture {
   position: fixed;
@@ -402,12 +346,8 @@
   z-index: -10;
   pointer-events: none;
   opacity: 0.45;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%230e7490' fill-opacity='0.5' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
-  background-size: 44px 77px;
-}
-/* Dark theme swaps the baked hex fill to the brighter cyan steel. */
-.dark .site-texture {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill='%2363d3ea' fill-opacity='0.5' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
+  background-size: 44px 77px;
 }
 /*
   Cursor-reactive web-lattice canvas (components/web-lattice.tsx). Fixed,
@@ -520,15 +460,11 @@
 }
 
 /*
-  Organization logos rendered as a monochrome silhouette in the theme's
-  foreground colour, so real (often colourful) logos still fit the palette and
-  stay visible on both light and dark.
+  Organization logos rendered as a monochrome silhouette in the foreground
+  colour, so real (often colourful) logos still fit the dark palette and stay
+  visible over the panels.
 */
 .org-logo {
-  filter: grayscale(1) brightness(0);
-  opacity: 0.75;
-}
-.dark .org-logo {
   filter: grayscale(1) brightness(0) invert(1);
   opacity: 0.85;
 }
@@ -1264,8 +1200,7 @@
 
 /*
   Diagonal wipe between tabs (View Transitions API): the incoming panel sweeps
-  in over the outgoing one along a diagonal leading edge, snappy (~260ms). The
-  theme toggle overrides this with its own clip-path circle (html.theme-vt).
+  in over the outgoing one along a diagonal leading edge, snappy (~260ms).
 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -1290,19 +1225,6 @@
     animation: none;
     z-index: 0;
   }
-}
-
-/* Theme toggle: suppress the wipe so only the JS-driven clip-path circle
-   animates -- the new theme wipes in over the old from the button's position. */
-html.theme-vt::view-transition-old(root),
-html.theme-vt::view-transition-new(root) {
-  animation: none;
-}
-html.theme-vt::view-transition-new(root) {
-  z-index: 1;
-}
-html.theme-vt::view-transition-old(root) {
-  z-index: 0;
 }
 
 @layer components {

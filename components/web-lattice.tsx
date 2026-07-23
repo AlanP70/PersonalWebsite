@@ -19,24 +19,15 @@ const HEX_RADIUS = 46; // circumradius of each flat-top honeycomb cell (px)
 const NODE_RADIUS = 0.9;
 const INFLUENCE = 210; // cursor influence radius (px)
 
-// Per-theme colours: resting cool cyan, cursor-warmed toward the magenta→crimson
-// accent, and the alpha envelope. Values mirror the palette in globals.css.
-// (`steel` is the cool readout accent, now cyan; `crimson` is the warm end.)
-const THEME = {
-  dark: {
-    steel: [99, 211, 234],
-    crimson: [255, 47, 158],
-    rest: 0.09,
-    peak: 0.5,
-    node: 0.2,
-  },
-  light: {
-    steel: [14, 116, 144],
-    crimson: [200, 18, 63],
-    rest: 0.13,
-    peak: 0.46,
-    node: 0.24,
-  },
+// Lattice colours: resting cool cyan, cursor-warmed toward the magenta→crimson
+// accent, and the alpha envelope. Values mirror the dark palette in globals.css.
+// (`steel` is the cool readout accent, cyan; `crimson` is the warm end.)
+const PALETTE = {
+  steel: [99, 211, 234],
+  crimson: [255, 47, 158],
+  rest: 0.09,
+  peak: 0.5,
+  node: 0.2,
 } as const;
 
 const POINTER_FINE = "(pointer: fine)";
@@ -99,9 +90,6 @@ function LatticeCanvas() {
     let nodes: Node[] = [];
     const pointer = { x: 0, y: 0, inside: false };
 
-    const theme = () =>
-      root.classList.contains("dark") ? THEME.dark : THEME.light;
-
     // Build a crisp flat-top honeycomb: step across a grid of hex centres and
     // emit each cell's six corners + edges. Shared vertices/edges are deduped by
     // their rounded coordinates so neighbouring cells reuse the same strands
@@ -161,7 +149,7 @@ function LatticeCanvas() {
 
     const draw = () => {
       frame = 0;
-      const { steel, crimson, rest, peak, node: nodeAlpha } = theme();
+      const { steel, crimson, rest, peak, node: nodeAlpha } = PALETTE;
       ctx.clearRect(0, 0, width, height);
       const glow = pointer.inside;
 
@@ -248,13 +236,6 @@ function LatticeCanvas() {
       }
     };
 
-    // Redraw resting colours when the theme toggles while the pointer is idle.
-    const themeObserver = new MutationObserver(() => draw());
-    themeObserver.observe(root, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
     resize();
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -269,7 +250,6 @@ function LatticeCanvas() {
       document.documentElement.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("blur", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
-      themeObserver.disconnect();
       root.classList.remove("lattice-active");
     };
   }, []);

@@ -3,15 +3,12 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import type { ComponentType, KeyboardEvent, ReactNode } from "react";
-import { useTheme } from "next-themes";
 import { Mail, FileText } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { FooterHint } from "@/components/easter-egg/footer-hint";
 import { SystemNote } from "@/components/easter-egg/system-note";
 import { NowPlayingWidget } from "@/components/now-playing-widget";
 import { links } from "@/lib/data/links";
-import { toggleTheme } from "@/lib/theme";
 import { withViewTransition } from "@/lib/view-transitions";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +51,6 @@ const PROMPTS: { keys: string; label: string }[] = [
   { keys: "←→", label: "Navigate" },
   { keys: "Enter", label: "Open" },
   { keys: "Esc", label: "Back" },
-  { keys: "T", label: "Theme" },
 ];
 
 /* ── Live clock (module-backed store so getSnapshot is cached — no
@@ -104,7 +100,6 @@ export function SiteShell({
   const [revealNonce, setRevealNonce] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const clock = useClock();
-  const { setTheme } = useTheme();
 
   // Read the current tab inside the global key handler without re-subscribing.
   const activeRef = useRef(active);
@@ -161,7 +156,7 @@ export function SiteShell({
   };
 
   // Global shortcuts backing the bottom prompt strip: [←→] cycles tabs from
-  // anywhere, [Esc] returns to the first section, [T] toggles the theme.
+  // anywhere, [Esc] returns to the first section.
   // ([Enter] "Open" is native — it activates the focused control/link.)
   useEffect(() => {
     const onKey = (e: globalThis.KeyboardEvent) => {
@@ -176,21 +171,6 @@ export function SiteShell({
       // A modal (terminal / lightbox) owns its own keys while open.
       if (document.querySelector('[role="dialog"][aria-modal="true"]')) return;
       if (e.defaultPrevented) return;
-
-      if (e.key === "t" || e.key === "T") {
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
-        e.preventDefault();
-        const btn =
-          document.querySelector<HTMLElement>("[data-theme-toggle]");
-        const rect = btn?.getBoundingClientRect();
-        toggleTheme(
-          setTheme,
-          rect
-            ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-            : undefined,
-        );
-        return;
-      }
 
       if (e.key === "Escape") {
         selectTab(tabs[0].id);
@@ -221,7 +201,7 @@ export function SiteShell({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [tabs, selectTab, setTheme]);
+  }, [tabs, selectTab]);
 
   return (
     <div className="hud-shell">
@@ -269,11 +249,6 @@ export function SiteShell({
                   </a>
                 ))}
               </nav>
-              <span
-                aria-hidden="true"
-                className="hidden h-6 w-px bg-border sm:block"
-              />
-              <ThemeToggle />
             </div>
           </div>
         </header>

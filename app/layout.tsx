@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Saira_Condensed, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import Image from "next/image";
-import { ThemeProvider } from "@/components/theme-provider";
 import { WebLattice } from "@/components/web-lattice";
 import { KonamiEasterEgg } from "@/components/easter-egg/konami";
 import "./globals.css";
@@ -60,10 +59,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2f0ee" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0c0e" },
-  ],
+  themeColor: "#070b16",
 };
 
 export default function RootLayout({
@@ -74,8 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${sairaCondensed.variable} ${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`dark ${sairaCondensed.variable} ${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         {/* Full-viewport background stack — fixed, behind all content. A
@@ -92,21 +87,14 @@ export default function RootLayout({
         <WebLattice />
         <div aria-hidden="true" className="site-texture" />
         <div aria-hidden="true" className="site-holo" />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-none focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
         >
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-none focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
-          >
-            Skip to content
-          </a>
-          {children}
-          <KonamiEasterEgg />
-        </ThemeProvider>
+          Skip to content
+        </a>
+        {children}
+        <KonamiEasterEgg />
       </body>
     </html>
   );
