@@ -28,7 +28,7 @@ export const experience: ExperienceEntry[] = [
     type: "Contract",
     dates: "June 2026 - July 2026",
     description:
-      "Build automated business and data pipelines for clients — pulling ad-spend data from the Meta Marketing API and TikTok exports and generating branded invoices automatically, replacing a manual process across multiple clients. See the Ad-Spend Invoice Automation project below.",
+      "Built automated business and data pipelines for clients, pulling ad-spend data from the Meta Marketing API and TikTok exports to generate branded invoices automatically. This replaces a manual process across multiple clients. See the Ad-Spend Invoice Automation project under Projects.",
     tags: ["Python", "Automation", "Integrations"],
     logo: "logos/allenby.svg",
   },

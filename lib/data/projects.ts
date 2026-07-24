@@ -28,7 +28,7 @@ export const projects: Project[] = [
   {
     title: "Eura",
     description:
-      "Worked on Eura, an AI-powered math-tutoring platform with an interactive whiteboard. Implemented Google OAuth2 (Authorization Code flow with CSRF protection) and a JWT session system with short-lived access and long-lived refresh tokens, plus email/password login with bcrypt hashing.",
+      "A full-stack math education app built with FastAPI, React, and TypeScript. Implemented the complete authentication system, including Google OAuth2, email/password login, JWT session handling, and per-user data isolation.",
     tags: ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL", "OAuth2", "JWT"],
     link: { label: "live site", href: "https://euralearn.com/" },
     badges: ["Live"],
@@ -46,7 +46,7 @@ export const projects: Project[] = [
   {
     title: "SnipSmart",
     description:
-      "A Chrome extension for capturing on-screen text. Uses OCR to detect and select text from screenshots, adds multilingual translation, and makes it easy to copy and manage what it finds.",
+      "A Chrome extension that captures any region of the screen, runs OCR to extract the text, and translates it inline. Built with Tesseract.js for text recognition and a translation API, with an in-context popup showing the original and translated text side by side.",
     tags: ["JavaScript", "React", "JSON", "Chrome Extension", "OCR", "Translation"],
     link: { label: "view repo", href: "https://github.com/AlanP70/SnipSmart" },
     badges: ["Open source"],
