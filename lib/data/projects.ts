@@ -12,12 +12,25 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "High-Frequency Chart Rendering",
+    description:
+      "A production JavaFX application's charts dropped frames whenever live data streams pushed updates faster than the UI thread could paint. I rebuilt the charting path to decouple rendering from the incoming data rate: batching bursts of updates into a steady frame budget and keeping redraw work off the JavaFX Application Thread, so the charts stayed smooth and the interface stayed responsive under load.",
+    tags: ["JavaFX", "Java", "Rendering", "Performance"],
+    badges: ["Internship project"],
+  },
+  {
+    title: "Ad-Spend Invoice Automation",
+    description:
+      "Built a Python pipeline that reconciles monthly ad spend across multiple Meta and TikTok accounts, splits it by region, and auto-submits formatted invoices to the client's accounting software (Dext). Worked around gaps in Meta's billing API with a hybrid approach pulling from both the Marketing API and official billing statements. Runs unattended on a cloud schedule via GitHub Actions, syncing source files through Dropbox.",
+    tags: ["Python", "Meta Marketing API", "TikTok API", "Dropbox API", "GitHub Actions", "Automation"],
+    badges: ["Client project"],
+  },
+  {
     title: "Eura",
     description:
-      "Contributed to Eura, an AI-powered math-tutoring platform with an interactive whiteboard. Implemented Google OAuth2 (Authorization Code flow with CSRF protection) and a JWT session system with short-lived access and long-lived refresh tokens, plus email/password login with bcrypt hashing.",
+      "Worked on Eura, an AI-powered math-tutoring platform with an interactive whiteboard. Implemented Google OAuth2 (Authorization Code flow with CSRF protection) and a JWT session system with short-lived access and long-lived refresh tokens, plus email/password login with bcrypt hashing.",
     tags: ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL", "OAuth2", "JWT"],
     link: { label: "live site", href: "https://euralearn.com/" },
-    featured: true,
     badges: ["Live"],
     image: "projects/eura.png",
   },
@@ -27,7 +40,6 @@ export const projects: Project[] = [
       "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled the image dataset and a pipeline converting live detection counts into wait-time estimates.",
     tags: ["YOLO", "Python", "Computer Vision"],
     link: { label: "live site", href: "https://linechecks.com/" },
-    featured: true,
     badges: ["Internship project"],
     image: "projects/linechecks.png",
   },
@@ -39,20 +51,6 @@ export const projects: Project[] = [
     link: { label: "view repo", href: "https://github.com/AlanP70/SnipSmart" },
     badges: ["Open source"],
     image: "projects/snipsmart.png",
-  },
-  {
-    title: "High-Frequency Chart Rendering",
-    description:
-      "VIBRAINT AI's legacy JavaFX charts dropped frames when live streams pushed more updates per second than the UI thread could paint. I rebuilt the charting path to decouple the render loop from the incoming data rate — coalescing bursts of updates into a steady frame budget and keeping the redraw work off the JavaFX Application Thread — so the graphs stay smooth and the interface stays interactive under sustained load.",
-    tags: ["JavaFX", "Java", "Rendering", "Performance"],
-    badges: ["Internship project"],
-  },
-  {
-    title: "Ad-Spend Invoice Automation",
-    description:
-      "Replaced a recurring manual billing task for an accounting client: a Python pipeline pulls ad-spend from the Meta Marketing and TikTok APIs, parses the billing PDFs/Excel exports, and auto-generates the monthly invoices, scheduled unattended via Windows Task Scheduler.",
-    tags: ["Python", "Meta Marketing API", "TikTok API", "Automation"],
-    badges: ["Client project"],
   },
   {
     title: "This Website",

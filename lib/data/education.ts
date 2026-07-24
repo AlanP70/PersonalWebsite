@@ -14,9 +14,9 @@ export const education: EducationEntry[] = [
     school: "University of Guelph",
     credential: "Bachelor of Computer Science",
     dates: "Expected April 2030",
-    logo: "logos/guelph.svg",
+    logo: "logos/guelph.png",
     courses: [
-      "Programming in C",
+      "Programming",
       "Data Structures",
       "Linear Algebra",
       "Discrete Mathematics",
