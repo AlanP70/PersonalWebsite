@@ -18,17 +18,17 @@ export const experience: ExperienceEntry[] = [
     type: "Internship",
     dates: "July 2026 – Present",
     description:
-      "Building real-time data-visualization features in JavaFX for a production desktop application, modernizing legacy charting components for high-frequency data.",
+      "Building real-time data-visualization features in JavaFX for a production desktop application, modernizing legacy charting components to handle high-frequency data updates smoothly.",
     tags: ["JavaFX", "Java", "Real-Time Data", "Desktop"],
     logo: "logos/vibraint.svg",
   },
   {
-    role: "Automation & Integration Developer",
+    role: "Automation Engineer",
     org: "Allenby Accounting",
     type: "Contract",
-    dates: "May 2026 - August 2026",
+    dates: "June 2026 - July 2026",
     description:
-      "Build automated business and data pipelines for clients — see the Ad-Spend Invoice Automation project below.",
+      "Built automated business and data pipelines for clients, pulling ad-spend data from the Meta Marketing API and TikTok exports to generate branded invoices automatically. This replaces a manual process across multiple clients. See the Ad-Spend Invoice Automation project under Projects.",
     tags: ["Python", "Automation", "Integrations"],
     logo: "logos/allenby.svg",
   },
@@ -38,7 +38,7 @@ export const experience: ExperienceEntry[] = [
     type: "Internship",
     dates: "March 2026 - April 2026",
     description:
-      "Trained a YOLO model in Python to track court occupancy at tennis and pickleball courts, then built a pipeline converting live counts into wait-time estimates.",
+      "Trained a YOLO computer-vision model in Python to detect court occupancy at tennis and pickleball courts from live camera footage, then built a pipeline converting real-time detection counts into wait-time estimates for the app.",
     tags: ["Computer Vision", "Python", "YOLO"],
     logo: "logos/linechecks.svg",
   }

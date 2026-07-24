@@ -1,52 +1,31 @@
 import { experience } from "@/lib/data/experience";
-import { OrgLogo } from "@/components/org-logo";
 import { SectionHeading } from "@/components/section-heading";
-import { TechPills, StatusBadges } from "@/components/pills";
+import { TechPills } from "@/components/pills";
+import { RecordList, RecordRow } from "@/components/record-row";
 
 export function Experience() {
   return (
     <section aria-label="Experience" className="section-container py-14 sm:py-16">
       <SectionHeading>Experience</SectionHeading>
-      <ul className="divide-y divide-border">
-        {experience.map((entry) => (
-          <li
+      <RecordList>
+        {experience.map((entry, i) => (
+          <RecordRow
             key={`${entry.org}-${entry.role}`}
-            className="flex gap-4 py-5 first:pt-0"
+            index={i + 1}
+            logo={entry.logo}
+            org={entry.org}
+            href={entry.href}
+            title={entry.role}
+            dates={entry.dates}
+            badges={[entry.type]}
           >
-            <OrgLogo src={entry.logo} name={entry.org} />
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <p className="font-heading font-semibold text-foreground">
-                  {entry.role}{" "}
-                  <span className="font-normal text-muted-foreground">
-                    &middot;{" "}
-                    {entry.href ? (
-                      <a
-                        href={entry.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline-offset-4 transition-colors hover:text-accent-amber hover:underline"
-                      >
-                        {entry.org}
-                      </a>
-                    ) : (
-                      entry.org
-                    )}
-                  </span>
-                </p>
-                <p className="shrink-0 font-mono text-xs text-muted-foreground">
-                  {entry.dates}
-                </p>
-              </div>
-              <StatusBadges items={[entry.type]} className="mt-2" />
-              <p className="mt-2 text-sm text-foreground/80">
-                {entry.description}
-              </p>
-              <TechPills items={entry.tags} className="mt-3" />
-            </div>
-          </li>
+            <p className="mt-2 text-sm text-foreground/80">
+              {entry.description}
+            </p>
+            <TechPills items={entry.tags} className="mt-3" />
+          </RecordRow>
         ))}
-      </ul>
+      </RecordList>
     </section>
   );
 }

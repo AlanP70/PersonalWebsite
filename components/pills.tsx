@@ -22,7 +22,9 @@ export function TechPills({
 }
 
 // Status badges — only rendered where genuinely true (internship, live, open
-// source, …). Slightly heavier than a tech pill so the state reads first.
+// source, …). The shared `.hud-badge` chip (chamfered corners + steel hairline)
+// keeps these state labels in the same angular register as the HUD panels,
+// rather than the old rounded pill.
 export function StatusBadges({
   items,
   className,
@@ -34,10 +36,7 @@ export function StatusBadges({
   return (
     <span className={`flex flex-wrap gap-1.5 ${className ?? ""}`}>
       {items.map((label) => (
-        <span
-          key={label}
-          className="inline-flex items-center rounded-full border border-foreground/25 bg-foreground/[0.06] px-2 py-0.5 font-mono text-[0.65rem] font-medium tracking-wider text-foreground/80 uppercase"
-        >
+        <span key={label} className="hud-badge">
           {label}
         </span>
       ))}
