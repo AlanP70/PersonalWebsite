@@ -14,7 +14,7 @@ export const projects: Project[] = [
   {
     title: "High-Frequency Chart Rendering",
     description:
-      "A production JavaFX application's charts dropped frames whenever live data streams pushed updates faster than the UI thread could paint. I rebuilt the charting path to decouple rendering from the incoming data rate: batching bursts of updates into a steady frame budget and keeping redraw work off the JavaFX Application Thread, so the charts stayed smooth and the interface stayed responsive under load.",
+      "A production JavaFX desktop application experienced UI performance issues under high-frequency updates. I rebuilt the charting path to decouple rendering from the update rate: batching bursts of updates into a steady frame budget and keeping redraw work off the JavaFX Application Thread, so the charts stayed smooth and the interface stayed responsive under load.",
     tags: ["JavaFX", "Java", "Rendering", "Performance"],
     badges: ["Internship project"],
   },
