@@ -19,6 +19,8 @@ export const photos: Photo[] = [
   { src: "/places/Gondola.JPG", caption: "Grand Teton National Park , Wyoming" },
   { src: "/places/Waterfall.JPG", caption: "Yellowstone National Park, Wyoming" },
   { src: "/places/Waterfall2.jpeg", caption: "Skogafoss, Iceland" },
+  { src: "/places/Vancouver.jpeg", caption: "Vancouver, Canada" },
+  { src: "/places/Kyoto2.jpeg", caption: "Kyoto, Japan" },
   { src: "/places/Tower.jpeg", caption: "Kyoto, Japan" },
   { src: "/places/Castle.jpeg", caption: "Neuschwanstein Castle, Germany" },
   { src: "/places/Big_Ben.jpg", caption: "London, United Kingdom" },
