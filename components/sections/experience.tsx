@@ -5,7 +5,7 @@ import { RecordList, RecordRow } from "@/components/record-row";
 
 export function Experience() {
   return (
-    <section aria-label="Experience" className="section-container py-14 sm:py-16">
+    <section aria-label="Experience" className="section-container section-pad">
       <SectionHeading>Experience</SectionHeading>
       <RecordList>
         {experience.map((entry, i) => (

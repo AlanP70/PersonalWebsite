@@ -32,7 +32,7 @@ export function About() {
   return (
     <section
       aria-label="About"
-      className="section-container py-14 sm:py-16"
+      className="section-container section-pad"
     >
       {/* Operator profile hero: an identity readout, mission brief, and a spec
           block sit beside a chamfered ID portrait — the same HUD register as the
@@ -124,8 +124,12 @@ export function About() {
         {/* Operator ID portrait — a chamfered HUD frame matching the project
             covers. Drop public/Portrait.jpg to fill it; until then an intentional
             monochrome placeholder holds the frame. */}
-        <div className="hero-reveal__item">
-          <div className="about-portrait hud-panel relative aspect-[4/5] w-36 overflow-hidden sm:w-full">
+        {/* On a phone the ID sits under the readouts at badge size, so the
+            wrapper — not just the frame — carries the width; otherwise the
+            "Operator ID" caption centres itself under the whole column and
+            floats away from the portrait it labels. */}
+        <div className="hero-reveal__item w-36 sm:w-full">
+          <div className="about-portrait hud-panel relative aspect-[4/5] w-full overflow-hidden">
             {hasPhoto ? (
               <Image
                 src="/Portrait.jpg"
@@ -164,12 +168,12 @@ export function About() {
       {/* Featured work — a compact teaser so a visitor landing here immediately
           sees real projects, with a path into the Projects tab (the tab system
           deep-links on the #projects hash). */}
-      <div className="mt-10">
-        <div className="mb-3 flex items-baseline justify-between gap-4">
+      <div className="mt-8 sm:mt-10">
+        <div className="mb-3 flex items-baseline justify-between gap-3">
           <p className="hud-label">Featured work</p>
           <HudLink href="#projects">all {projects.length} projects</HudLink>
         </div>
-        <ul className="grid grid-cols-3 gap-3">
+        <ul className="grid grid-cols-3 gap-2.5 sm:gap-3">
           {projects
             .filter((project) => project.image)
             .slice(0, 3)
@@ -197,7 +201,7 @@ export function About() {
         </ul>
       </div>
 
-      <div className="mt-10 space-y-6">
+      <div className="mt-8 space-y-5 sm:mt-10 sm:space-y-6">
         {skillGroups.map((group) => (
           <div
             key={group.category}
@@ -211,9 +215,9 @@ export function About() {
         ))}
       </div>
 
-      <div className="mt-10 grid gap-8 sm:grid-cols-2">
+      <div className="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8">
         <div>
-          <p className="hud-label mb-2">Languages</p>
+          <p className="hud-label mb-2">Spoken Languages</p>
           <TechPills items={languages} />
         </div>
         <div>

@@ -26,7 +26,7 @@ export function Projects() {
   return (
     <section
       aria-label="Projects"
-      className="section-container-gallery py-14 sm:py-16"
+      className="section-container-gallery section-pad"
     >
       <SectionHeading>Projects</SectionHeading>
       <ProjectGallery items={items} />

@@ -64,7 +64,14 @@ function Card({
       >
         <CardCover item={item} />
         <span aria-hidden="true" className="hud-divider" />
-        <div className={cn("flex flex-1 flex-col", featured ? "p-5 sm:p-6" : "p-4")}>
+        {/* Both tiers stack full-width on a phone, so the dense tier gets the
+            same 20px inset there and only tightens once it's in a grid. */}
+        <div
+          className={cn(
+            "flex flex-1 flex-col",
+            featured ? "p-5 sm:p-6" : "p-5 sm:p-4",
+          )}
+        >
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <h3
               className={cn(
@@ -105,7 +112,7 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
     <>
       {/* Featured tier — a 2-up row of large cards. */}
       {featured.length > 0 && (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
           {featured.map((item) => (
             <Card
               key={item.project.title}
@@ -119,7 +126,7 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
 
       {/* Everything else — a denser 3-up grid, breaking the single column. */}
       {rest.length > 0 && (
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-5 grid gap-5 sm:mt-6 sm:grid-cols-2 lg:grid-cols-3">
           {rest.map((item) => (
             <Card
               key={item.project.title}

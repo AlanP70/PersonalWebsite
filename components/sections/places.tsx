@@ -14,7 +14,7 @@ export function Places() {
   return (
     <section
       aria-label="Photography"
-      className="section-container-gallery py-14 sm:py-16"
+      className="section-container-gallery section-pad"
     >
       <SectionHeading sub="My favourite photos as a beginner photographer.">
         Photography

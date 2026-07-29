@@ -14,7 +14,7 @@ export function SectionHeading({
   sub?: ReactNode;
 }) {
   return (
-    <div className="mb-8">
+    <div className="mb-6 sm:mb-8">
       <div className="flex items-center gap-3">
         <span aria-hidden="true" className="hud-marker" />
         <h2 className="font-heading text-2xl font-bold tracking-tight whitespace-nowrap sm:text-3xl">
@@ -23,7 +23,9 @@ export function SectionHeading({
         <span aria-hidden="true" className="hud-heading-rule" />
       </div>
       {sub && (
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">{sub}</p>
+        <p className="mt-2.5 max-w-xl text-sm text-muted-foreground sm:mt-3">
+          {sub}
+        </p>
       )}
     </div>
   );

@@ -3,6 +3,9 @@
 // section breaks read in the same mission-computer register as everything else.
 export function SectionDivider({ className }: { className?: string }) {
   return (
-    <div aria-hidden="true" className={`hud-divider ${className ?? "my-10"}`} />
+    <div
+      aria-hidden="true"
+      className={`hud-divider ${className ?? "my-8 sm:my-10"}`}
+    />
   );
 }

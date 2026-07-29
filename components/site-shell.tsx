@@ -208,7 +208,7 @@ export function SiteShell({
       {/* Top chrome: identity bar + the horizontal tab strip. */}
       <div className="hud-header">
         <header className="hud-topbar">
-          <div className="relative flex items-center justify-between gap-4 px-4 py-2 sm:px-6">
+          <div className="relative flex items-center justify-between gap-3 px-5 py-2.5 sm:gap-4 sm:px-6">
             {/* Centre-of-bar SYSTEM NOTE readout. Absolutely centred so it
                 overlays the middle without disturbing the identity/controls
                 columns, and hidden below md where the two edges would crowd it
@@ -219,7 +219,7 @@ export function SiteShell({
             <button
               type="button"
               onClick={() => selectTab(tabs[0].id)}
-              className="group flex flex-col items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group flex min-w-0 flex-col items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <span className="font-heading text-base leading-none font-bold tracking-wide text-foreground uppercase transition-colors group-hover:text-crimson sm:text-lg">
                 {IDENTITY.name}
@@ -230,9 +230,13 @@ export function SiteShell({
             </button>
 
             <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* The comms row rides at every width — hiding it on phones left
+                  the identity bar half-empty and was the clearest "cut-down
+                  version of the desktop site" tell. Four 32px targets fit
+                  alongside the identity block down to 320px. */}
               <nav
                 aria-label="Social links"
-                className="hidden items-center gap-0.5 sm:flex"
+                className="flex shrink-0 items-center gap-0.5"
               >
                 {COMMS.map(({ label, href, Icon, external, download }) => (
                   <a
@@ -348,7 +352,7 @@ export function SiteShell({
       {/* Bottom button-prompt strip — real keycap shortcuts, live clock +
           location, and an honest progress/counts cluster on the right. */}
       <footer className="hud-prompt">
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-2 sm:px-6">
           {/* Keycap prompts — hidden on touch (no keyboard) via CSS. */}
           <div className="hud-keycaps flex flex-wrap items-center gap-x-3 gap-y-1">
             {PROMPTS.map(({ keys, label }, i) => (
@@ -405,7 +409,7 @@ export function SiteShell({
 
         {/* Easter-egg discoverability line (touch taps it to open; desktop uses
             the Konami sequence). Kept subtle. */}
-        <div className="flex justify-center px-4 pb-1.5 text-center text-[0.6rem]">
+        <div className="flex justify-center px-5 pb-1.5 text-center text-[0.6rem]">
           <FooterHint />
         </div>
       </footer>

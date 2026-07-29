@@ -35,7 +35,7 @@ export function RecordRow({
   children?: ReactNode;
 }) {
   return (
-    <li className="record-row flex gap-4 py-5 first:pt-0">
+    <li className="record-row flex gap-3.5 py-5 first:pt-0 sm:gap-4">
       {/* ID column: framed org chip + catalog index. */}
       <div className="flex flex-col items-center gap-1.5">
         <OrgLogo src={logo} name={org} />

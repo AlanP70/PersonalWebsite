@@ -31,11 +31,13 @@ const channels = [
 
 export function Contact() {
   return (
-    <section aria-label="Contact" className="section-container py-14 sm:py-16">
+    <section aria-label="Contact" className="section-container section-pad">
       <SectionHeading sub="Open to internship opportunities — reach out anytime.">
         Contact
       </SectionHeading>
-      <ul className="flex flex-col gap-3 text-sm">
+      {/* Roomier rows on a phone so each channel is a comfortable tap target;
+          the desktop list keeps its tighter 12px rhythm. */}
+      <ul className="-my-1 flex flex-col gap-4 text-sm sm:my-0 sm:gap-3">
         {channels.map((channel) => {
           const Icon = channel.icon;
           return (
@@ -46,7 +48,7 @@ export function Contact() {
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
                 {...(channel.download ? { download: true } : {})}
-                className="inline-flex items-center gap-2.5 font-medium text-foreground/90 transition-colors hover:text-accent-amber"
+                className="inline-flex items-center gap-2.5 py-1 font-medium text-foreground/90 transition-colors hover:text-accent-amber sm:py-0"
               >
                 <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
                 {channel.label}
