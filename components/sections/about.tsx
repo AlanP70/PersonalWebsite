@@ -14,7 +14,7 @@ import { skillGroups, certifications } from "@/lib/data/skills";
 const hasPhoto = fs.existsSync(path.join(process.cwd(), "public", "Portrait.jpg"));
 
 // Easy to edit: the status line and the intro sentence.
-const status = "Currently interning at Vibraint AI";
+const status = "Open to Winter 2027 co-op";
 const intro =
   "I'm Alan, a second-year Computer Science student at Guelph. Recently, I've been building real-time data visualization systems, training computer vision models, and writing Python automations to simplify repetitive business tasks.";
 

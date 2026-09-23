@@ -32,7 +32,7 @@ const channels = [
 export function Contact() {
   return (
     <section aria-label="Contact" className="section-container section-pad">
-      <SectionHeading sub="Open to internship opportunities — reach out anytime.">
+      <SectionHeading sub="Open to Winter 2027 co-op — reach out anytime.">
         Contact
       </SectionHeading>
       {/* Roomier rows on a phone so each channel is a comfortable tap target;

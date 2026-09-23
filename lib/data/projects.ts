@@ -12,17 +12,18 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "High-Frequency Chart Rendering",
+    title: "Real-Time EEG Chart Rendering",
     description:
-      "A production JavaFX desktop application experienced UI performance issues under high-frequency updates. I rebuilt the charting path to decouple rendering from the update rate: batching bursts of updates into a steady frame budget and keeping redraw work off the JavaFX Application Thread, so the charts stayed smooth and the interface stayed responsive under load.",
-    tags: ["JavaFX", "Java", "Rendering", "Performance"],
+      "Sole developer on the real-time charts in a Java desktop application for EEG-based stroke rehab. Compared 3 smoothing methods across 25k classifier samples to guide the team's filter choice, then wrote a Savitzky-Golay filter with even-window support and checked it against known values. Swapped a hardcoded moving average for a Spring interface that reads the smoothing method from a config file. Fixed crashes and misaligned plots caused by timer, bounds, race and phase-shift bugs, and wrote 305 regression tests for the chart bounds logic, each proven to fail when the bug it guards against returns.",
+    tags: ["Java", "JavaFX", "Spring", "Testing"],
+    featured: true,
     badges: ["Internship project"],
   },
   {
     title: "Ad-Spend Invoice Automation",
     description:
-      "Built a Python pipeline that reconciles monthly ad spend across multiple Meta and TikTok accounts, splits it by region, and auto-submits formatted invoices to the client's accounting software (Dext). Worked around gaps in Meta's billing API with a hybrid approach pulling from both the Marketing API and official billing statements. Runs unattended on a cloud schedule via GitHub Actions, syncing source files through Dropbox.",
-    tags: ["Python", "Meta Marketing API", "TikTok API", "Dropbox API", "GitHub Actions", "Automation"],
+      "A Python pipeline that pulls monthly Meta and TikTok ad-spend reports from Dropbox, generates branded client invoices, and sends them to the firm's bookkeeping system. It runs on a schedule through GitHub Actions, with Dropbox auth moved to refresh tokens so runs don't fail silently when a token expires.",
+    tags: ["Python", "GitHub Actions", "Dropbox API", "Meta Marketing API", "TikTok"],
     badges: ["Client project"],
   },
   {
@@ -37,7 +38,7 @@ export const projects: Project[] = [
   {
     title: "LineChecks — Court Occupancy Detection",
     description:
-      "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled the image dataset and a pipeline converting live detection counts into wait-time estimates.",
+      "YOLO model (Python) tracking real-time court occupancy at tennis and pickleball courts; built and labeled a 1,000+ image dataset and a pipeline converting live detection counts into wait-time estimates.",
     tags: ["YOLO", "Python", "Computer Vision"],
     link: { label: "live site", href: "https://linechecks.com/" },
     badges: ["Internship project"],

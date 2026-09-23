@@ -13,22 +13,22 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    role: "Software Developer",
-    org: "Vibraint AI",
+    role: "Software Developer Intern",
+    org: "Vibraint | Neurotech Startup",
     type: "Internship",
-    dates: "July 2026 – Present",
+    dates: "July 2026 – September 2026",
     description:
-      "Building real-time data-visualization features in JavaFX for a production desktop application, modernizing legacy charting components to handle high-frequency data updates smoothly.",
-    tags: ["JavaFX", "Java", "Real-Time Data", "Desktop"],
+      "Sole developer on the real-time charts in a Java desktop app for EEG-based stroke rehab. Compared 3 smoothing methods across 25k classifier samples to guide the team's filter choice, wrote a Savitzky-Golay filter with even-window support, and replaced a hardcoded moving average with a Spring interface that reads the method from a config file. Fixed the timer, bounds, race and phase-shift bugs behind crashes and misaligned plots, and wrote 305 regression tests for the chart bounds logic.",
+    tags: ["Java", "JavaFX", "Spring", "Testing"],
     logo: "logos/vibraint.svg",
   },
   {
     role: "Automation Engineer",
     org: "Allenby Accounting",
     type: "Contract",
-    dates: "June 2026 - July 2026",
+    dates: "June 2026 – Present",
     description:
-      "Built automated business and data pipelines for clients, pulling ad-spend data from the Meta Marketing API and TikTok exports to generate branded invoices automatically. This replaces a manual process across multiple clients. See the Ad-Spend Invoice Automation project under Projects.",
+      "Build and maintain automated billing pipelines for an accounting firm's clients. Monthly Meta and TikTok ad-spend reports are turned into branded invoices on a schedule and delivered automatically.",
     tags: ["Python", "Automation", "Integrations"],
     logo: "logos/allenby.svg",
   },
@@ -36,9 +36,9 @@ export const experience: ExperienceEntry[] = [
     role: "Machine Learning Intern",
     org: "LineChecks - Desjardins Portfolio Company",
     type: "Internship",
-    dates: "March 2026 - April 2026",
+    dates: "March 2026 – April 2026",
     description:
-      "Trained a YOLO computer-vision model in Python to detect court occupancy at tennis and pickleball courts from live camera footage, then built a pipeline converting real-time detection counts into wait-time estimates for the app.",
+      "Trained a YOLO computer-vision model in Python on 1,000+ images I labeled to detect court occupancy at tennis and pickleball courts, then built a pipeline that converts real-time detection counts into wait-time estimates.",
     tags: ["Computer Vision", "Python", "YOLO"],
     logo: "logos/linechecks.svg",
   }
