@@ -26,7 +26,7 @@ export const experience: ExperienceEntry[] = [
     role: "Automation Engineer",
     org: "Allenby Accounting",
     type: "Contract",
-    dates: "June 2026 – Present",
+    dates: "June 2026 – September 2026",
     description:
       "Build and maintain automated billing pipelines for an accounting firm's clients. Monthly Meta and TikTok ad-spend reports are turned into branded invoices on a schedule and delivered automatically.",
     tags: ["Python", "Automation", "Integrations"],

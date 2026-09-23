@@ -18,9 +18,10 @@ export const education: EducationEntry[] = [
     courses: [
       "Programming",
       "Data Structures",
+      "OOP",
+      "Micro Systems",
       "Linear Algebra",
       "Discrete Mathematics",
-      "Web Design",
     ],
   },
 ];

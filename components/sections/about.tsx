@@ -207,8 +207,10 @@ export function About() {
             key={group.category}
             className="flex flex-col gap-2 sm:flex-row sm:gap-6"
           >
-            <p className="hud-label w-28 shrink-0 pt-0.5">
-              {group.category}
+            <p className="hud-label shrink-0 pt-0.5 sm:w-28">
+              {/* Let a long label like "Frameworks/Libraries" wrap after the
+                  slash instead of overflowing into the pills. */}
+              {group.category.replaceAll("/", "/\u200B")}
             </p>
             <TechPills items={group.items} />
           </div>
