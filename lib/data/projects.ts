@@ -17,7 +17,6 @@ export const projects: Project[] = [
       "A learning archive where students upload their course material and ask questions like \"where did I first learn recursion?\" to get a timeline of every place a concept appeared. It uses PDF ingestion with page-level citations, a background job queue, and semantic search with pgvector. It correctly dated 58 of 70 real course files from filenames alone. An evaluation showed vector search gave no measurable gain over a plain keyword baseline, so the UI says \"earliest match\" instead of claiming \"first occurrence.\"",
     tags: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "pgvector", "Redis"],
     link: { label: "view repo", href: "https://github.com/AlanP70/Rewind" },
-    featured: true,
     badges: ["In progress"],
     image: "projects/rewind.png",
   },
@@ -26,7 +25,6 @@ export const projects: Project[] = [
     description:
       "Sole developer on the real-time charts in a Java desktop application for EEG-based stroke rehab. Compared 3 smoothing methods across 25k classifier samples to guide the team's filter choice, then wrote a Savitzky-Golay filter with even-window support and checked it against known values. Swapped a hardcoded moving average for a Spring interface that reads the smoothing method from a config file. Fixed crashes and misaligned plots caused by timer, bounds, race and phase-shift bugs, and wrote 305 regression tests for the chart bounds logic, each proven to fail when the bug it guards against returns.",
     tags: ["Java", "JavaFX", "Spring", "Testing"],
-    featured: true,
     badges: ["Internship project"],
   },
   {
