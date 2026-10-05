@@ -11,6 +11,13 @@ export type Photo = {
 export const photos: Photo[] = [
   // { src: "/places/banff.jpg", caption: "Banff, AB — 2025" },
   // { src: "/places/no-caption.jpg" },
+  { src: "/places/LittleMermaid.jpg", caption: "Copenhagen, Denmark" },
+  { src: "/places/StreetLeadingLines.jpg", caption: "Copenhagen, Denmark" },
+  { src: "/places/Vasa.jpg", caption: "Stockholm, Sweden" },
+  { src: "/places/StockholmStreet.jpg", caption: "Stockholm, Sweden" },
+  { src: "/places/StockholmNight.jpg", caption: "Stockholm, Sweden" },
+  { src: "/places/VilniusChurch.jpg", caption: "Vilnius, Lithuania" },
+  { src: "/places/RigaBuilding.jpg", caption: "Riga, Latvia" },
   { src: "/places/Mormon_Row.jfif", caption: "Mormon Row, Grand Teton National Park" },
   { src: "/places/moose.jfif", caption: "Grand Teton National Park, Wyoming" },
   { src: "/places/bears.jfif", caption: "Yellowstone National Park, Wyoming" },
